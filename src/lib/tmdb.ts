@@ -9,6 +9,8 @@ export interface Movie {
   year?: number;
   age?: string;
   duration?: string;
+  description?: string; // Added description
+  trailerId?: string;
 }
 
 export const getCineNovaData = async () => {
@@ -24,23 +26,24 @@ export const getCineNovaData = async () => {
       match: 98,
       year: 2024,
       age: "16+",
-      duration: "2h 15m"
+      duration: "2h 15m",
+      trailerId: "U2Qp5pL3ovA"
     },
     trending: [
-      { id: 1, title: "Dune: Part Two", poster_path: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg" },
-      { id: 2, title: "Civil War", poster_path: "https://image.tmdb.org/t/p/w500/sh7Rg8Er3tFcN9BpKIPOMvALgZd.jpg" },
+      { id: 1, title: "Dune: Part Two", poster_path: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",trailerId: "U2Qp5pL3ovA" },
+      { id: 2, title: "Civil War", poster_path: "https://image.tmdb.org/t/p/w500/sh7Rg8Er3tFcN9BpKIPOMvALgZd.jpg",trailerId: "aDyQxtg0V2w" },
       // 👇 CHANGED: Using reliable placeholders for broken ones
-      { id: 3, title: "Godzilla x Kong", poster_path: "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=800&auto=format&fit=crop" }, 
-      { id: 4, title: "Kung Fu Panda 4", poster_path: "https://image.tmdb.org/t/p/w500/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg" },
+      { id: 3, title: "Oppenheimer", poster_path: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=800&auto=format&fit=crop", trailerId: "uYPbbksJxIg" }, 
+      { id: 4, title: "Kung Fu Panda 4", poster_path: "https://image.tmdb.org/t/p/w500/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg",trailerId: "_inKs4eeHiI" },
       { id: 5, title: "Arthur the King", poster_path: "https://images.unsplash.com/photo-1535905557558-afc4877a26fc?q=80&w=800&auto=format&fit=crop" },
     ],
     top10: [
-      { id: 6, title: "Avatar", poster_path: "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg" },
+      { id: 6, title: "Avatar", poster_path: "https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg", trailerId: "d9MyW72ELq0" },
       { id: 7, title: "Avengers: Endgame", poster_path: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" },
       // 👇 CHANGED: Reliable Unsplash images for Sci-Fi look
       { id: 8, title: "Inception", poster_path: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=800&auto=format&fit=crop" },
-      { id: 9, title: "Interstellar", poster_path: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop" },
-      { id: 10, title: "The Dark Knight", poster_path: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" },
+      { id: 9, title: "Interstellar", poster_path: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop",trailerId: "zSWdZVtXT7E"},
+      { id: 10, title: "The Dark Knight", poster_path: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg", trailerId: "EXeTwQWrcwY" },
     ]
   };
 };

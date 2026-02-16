@@ -1,153 +1,115 @@
-import { getCineNovaData } from "../lib/tmdb";
+"use client"; // 👈 This allows for clicking and state!
 
-export default async function Home() {
-  const data = await getCineNovaData();
+import { useState, useEffect } from "react";
+import { getCineNovaData, Movie } from "../lib/tmdb";
+
+export default function Home() {
+  const [data, setData] = useState<any>(null);
+  const [activeTrailer, setActiveTrailer] = useState<string | null>(null);
+
+  // Fetch data on load since we are now a Client Component
+  useEffect(() => {
+    getCineNovaData().then(setData);
+  }, []);
+
+  if (!data) return <div className="bg-black min-h-screen flex items-center justify-center text-purple-500">Loading CineNova...</div>;
+
   const { hero, trending, top10 } = data;
 
   return (
-    <main className="min-h-screen bg-[#0D0C11] text-white font-sans selection:bg-purple-500">
+    <main className="min-h-screen bg-[#0D0C11] text-white font-sans overflow-x-hidden">
       
-      {/* 1. NAVBAR */}
-      <nav className="fixed top-0 w-full z-50 flex items-center justify-between px-8 py-4 bg-gradient-to-b from-black/90 to-transparent">
-        <div className="flex items-center gap-8">
-          <div className="text-2xl font-bold flex items-center gap-1 text-purple-400">
-            <span className="text-3xl">▶</span> CineNova
-          </div>
-          <div className="hidden md:flex gap-6 text-gray-300 text-sm font-medium">
-            <a href="#" className="hover:text-white transition">Home</a>
-            <a href="#" className="hover:text-white transition">Movies</a>
-            <a href="#" className="hover:text-white transition">Series</a>
-            <a href="#" className="hover:text-white transition">My List</a>
+      {/* 🎬 TRAILER MODAL OVERLAY */}
+      {activeTrailer && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-20">
+          <button 
+            onClick={() => setActiveTrailer(null)}
+            className="absolute top-10 right-10 text-white text-4xl hover:text-purple-500 transition"
+          >
+            ✕
+          </button>
+          <div className="w-full max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(147,51,234,0.4)] border border-purple-500/30">
+            <iframe
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${activeTrailer}?autoplay=1`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
         </div>
-        <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center font-bold text-sm">
-          U
+      )}
+
+      {/* 1. NAVBAR */}
+      <nav className="fixed top-0 w-full z-50 flex items-center justify-between px-8 py-4 bg-gradient-to-b from-black/90 to-transparent">
+        <div className="text-2xl font-bold flex items-center gap-1 text-purple-400">
+           CineNova
         </div>
       </nav>
 
       {/* 2. HERO SECTION */}
       <div className="relative w-full h-[85vh]">
         <div className="absolute inset-0">
-          <img 
-            src={hero.backdrop_path} 
-            alt="Hero" 
-            className="w-full h-full object-cover opacity-70"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0D0C11] via-[#0D0C11]/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0D0C11] via-[#0D0C11]/80 to-transparent" />
+          <img src={hero.backdrop_path} alt="Hero" className="w-full h-full object-cover opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0D0C11] via-transparent to-transparent" />
         </div>
 
         <div className="relative z-10 flex flex-col justify-center h-full px-8 md:px-16 max-w-3xl pt-20">
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight tracking-tight uppercase drop-shadow-lg">
-            The Last <br /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              Horizon
-            </span>
+          <h1 className="text-6xl font-extrabold mb-4 uppercase tracking-tighter">
+            The Last <span className="text-purple-500">Horizon</span>
           </h1>
+          <p className="text-gray-300 text-lg mb-8 max-w-xl">{hero.description}</p>
           
-          <div className="flex items-center gap-4 text-sm font-semibold mb-6 text-gray-300">
-            <span className="text-green-400">{hero.match}% Match</span>
-            <span>{hero.year}</span>
-            <span className="border border-gray-500 px-1 text-xs rounded">{hero.age}</span>
-            <span>{hero.duration}</span>
-            <span className="text-xs border border-purple-500 text-purple-400 px-1 rounded">HD</span>
-          </div>
-
-          <p className="text-gray-300 text-lg mb-8 line-clamp-3 max-w-xl drop-shadow-md">
-            {hero.description}
-          </p>
-
           <div className="flex gap-4">
-            <button className="bg-white text-black px-8 py-3 rounded font-bold flex items-center gap-2 hover:bg-gray-200 transition">
-              <span>▶</span> Play
-            </button>
-            <button className="bg-gray-800/80 backdrop-blur-sm text-white px-8 py-3 rounded font-bold hover:bg-gray-700 transition">
-              + My List
+            <button 
+              onClick={() => setActiveTrailer(hero.trailerId)}
+              className="bg-white text-black px-8 py-3 rounded font-bold flex items-center gap-2 hover:bg-purple-500 hover:text-white transition-all duration-300"
+            >
+              <span>▶</span> Play Trailer
             </button>
           </div>
         </div>
       </div>
 
-      {/* 3. MOOD PICKS */}
-      <div className="px-8 md:px-16 mb-12 -mt-10 relative z-20">
-        <h3 className="text-lg font-bold mb-4 text-gray-200">Mood Picks</h3>
-        <div className="flex flex-wrap gap-4">
-          {["😂 Happy", "😢 Sad", "🤯 Mind-Blowing", "❤️ Romantic", "🧘 Relaxed"].map((mood) => (
-            <button key={mood} className="bg-gray-800/60 border border-gray-700 px-6 py-2 rounded-full text-sm font-medium hover:bg-purple-600 hover:border-purple-500 transition-all cursor-pointer backdrop-blur-md">
-              {mood}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 4. HORIZONTAL ROWS */}
-      <div className="space-y-12 pb-20">
-        <MovieRow title="Trending Now" movies={trending} />
-        <MovieRow title="Top 10 Today" movies={top10} isRanked={true} />
-        <MovieRow title="Popular on CineNova" movies={trending} />
+      {/* 3. MOVIE ROWS */}
+      <div className="space-y-16 pb-20 -mt-20 relative z-20">
+        <MovieRow title="Trending Now" movies={trending} onPlay={setActiveTrailer} />
+        <MovieRow title="Top 10 Today" movies={top10} onPlay={setActiveTrailer} isRanked={true} />
       </div>
     </main>
   );
 }
 
-// Fixed MovieRow Component
-function MovieRow({ title, movies, isRanked = false }: { title: string, movies: any[], isRanked?: boolean }) {
+function MovieRow({ title, movies, onPlay, isRanked = false }: { title: string, movies: any[], onPlay: (id: string) => void, isRanked?: boolean }) {
   return (
     <div className="px-8 md:px-16">
-      <h2 className="text-xl font-bold mb-4 flex items-center gap-2 text-white">
-        <div className="w-1 h-6 bg-purple-600 rounded-full"></div> 
-        {title}
+      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+        <div className="w-1 h-8 bg-purple-600 rounded-full" /> {title}
       </h2>
-      
-      {/* Scroll Container */}
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-        {movies.map((movie, index) => {
-          // Check for full link vs partial TMDB link
-          const imageUrl = movie.poster_path?.startsWith("http") 
-            ? movie.poster_path 
-            : `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-
-          return (
-            <div key={movie.id} className="group flex-shrink-0 cursor-pointer">
-              
-              {/* Image Container - STRICT DIMENSIONS (160px width x 240px height) */}
-              <div className="relative w-[320px] h-[480px] md:w-[400px] md:h-[600px] rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(147,51,234,0.3)] bg-gray-800">
-                
-                {/* Rank Number (Top 10 Only) */}
-                {isRanked && (
-                  <>
-                    <span className="absolute bottom-0 left-0 text-[100px] font-black text-black leading-[0.8] z-20 translate-y-4 -translate-x-2">
-                      {index + 1}
-                    </span>
-                    <span className="absolute bottom-0 left-0 text-[100px] font-black text-white leading-[0.8] z-10 translate-y-4 -translate-x-2 opacity-50 stroke-white">
-                      {index + 1}
-                    </span>
-                  </>
-                )}
-
-                <img
-                  src={imageUrl}
-                  alt={movie.title}
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Play Button Overlay */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-30">
-                  <div className="w-20 h-20 bg-white/20 backdrop-blur rounded-full flex items-center justify-center border border-white/50">
+      <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide">
+        {movies.map((movie, index) => (
+          <div 
+            key={movie.id} 
+            onClick={() => movie.trailerId && onPlay(movie.trailerId)}
+            className="flex-shrink-0 group cursor-pointer"
+          >
+            <div className="relative w-[320px] h-[480px] md:w-[400px] md:h-[600px] rounded-xl overflow-hidden bg-gray-900 border border-white/5 transition-all duration-500 group-hover:scale-105 group-hover:border-purple-500/50">
+              <img
+                src={movie.poster_path.startsWith('http') ? movie.poster_path : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={movie.title}
+                className="w-full h-full object-cover group-hover:opacity-40 transition-opacity"
+              />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                 <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-transform">
                     ▶
-                  </div>
-                </div>
-              </div>
-
-              {/* Movie Title (Now Visible Below Image) */}
-              <div className="mt-2 w-[160px] md:w-[240px]">
-                <h3 className="text-gray-600 text-sm font-medium truncate group-hover:text-white transition-colors">
-                  {movie.title}
-                </h3>
+                 </div>
               </div>
             </div>
-          );
-        })}
+            <h3 className="mt-3 text-sm font-semibold text-gray-400 group-hover:text-white transition-colors">{movie.title}</h3>
+          </div>
+        ))}
       </div>
     </div>
   );
