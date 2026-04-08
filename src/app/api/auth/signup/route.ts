@@ -36,10 +36,20 @@ export async function POST(request: Request) {
       password: hashedPassword,
     });
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       { message: 'User created successfully', user: { id: newUser._id, name: newUser.name, email: newUser.email } },
       { status: 201 }
     );
+
+    // Set a simple cookie for session management
+    response.cookies.set('userId', newUser._id.toString(), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+      path: '/',
+    });
+
+    return response;
   } catch (error: any) {
     console.error('Signup error:', error);
     return NextResponse.json(

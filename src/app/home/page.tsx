@@ -6,12 +6,12 @@ import {
   GENRES,
   getPlatformData,
   searchMovies,
-  getConnectedPlatforms,
-  setConnectedPlatforms,
-  hasCompletedOnboarding,
   type Platform,
   type Movie,
 } from "../../lib/tmdb";
+import ConnectionModal from "@/components/ConnectionModal";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 /* ═══════════════════════════════════════════════════════════ */
 /* 🔮 AMBIENT BACKGROUND                                      */
@@ -43,11 +43,17 @@ function OnboardingScreen({ onComplete }: { onComplete: (ids: string[]) => void 
     });
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (selected.size === 0) return;
     const ids = Array.from(selected);
-    setConnectedPlatforms(ids);
-    onComplete(ids);
+    try {
+      await axios.post("/api/user/platforms", { platforms: ids });
+      onComplete(ids);
+    } catch (err) {
+      console.error("Failed to save platforms", err);
+      // Fallback to local storage or show error
+      onComplete(ids);
+    }
   };
 
   return (
@@ -226,7 +232,7 @@ function MovieRow({ title, movies, onPlay, onSelect, platformColor, platform }: 
 /* ═══════════════════════════════════════════════════════════ */
 /* ⚙️ SETTINGS MODAL                                          */
 /* ═══════════════════════════════════════════════════════════ */
-function PlatformSettings({ connectedIds, onSave, onClose }: { connectedIds: string[]; onSave: (ids: string[]) => void; onClose: () => void }) {
+function PlatformSettings({ connectedIds, onSave, onClose, onConnectNew }: { connectedIds: string[]; onSave: (ids: string[]) => void; onClose: () => void; onConnectNew: (p: Platform) => void }) {
   const [selected, setSelected] = useState<Set<string>>(new Set(connectedIds));
   const toggle = (id: string) => { setSelected((prev) => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; }); };
 
@@ -241,13 +247,17 @@ function PlatformSettings({ connectedIds, onSave, onClose }: { connectedIds: str
           {PLATFORMS.map((p) => {
             const isOn = selected.has(p.id);
             return (
-              <button key={p.id} onClick={() => toggle(p.id)} className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${isOn ? "bg-white/[0.05] border-white/15" : "bg-white/[0.01] border-white/[0.05] opacity-50"}`}>
+              <div key={p.id} className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${isOn ? "bg-white/[0.05] border-white/15" : "bg-white/[0.01] border-white/[0.05] opacity-50"}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-black text-sm" style={{ backgroundColor: p.color }}>{p.icon}</div>
                   <div className="text-left"><div className="font-black text-sm">{p.name}</div><div className="text-[10px] text-gray-500 font-bold">{p.tagline}</div></div>
                 </div>
-                <div className={`w-10 h-6 rounded-full transition-all flex items-center px-1 ${isOn ? "bg-green-500 justify-end" : "bg-white/10 justify-start"}`}><div className="w-4 h-4 rounded-full bg-white shadow-sm" /></div>
-              </button>
+                {isOn ? (
+                   <button onClick={() => toggle(p.id)} className="w-10 h-6 rounded-full bg-green-500 flex items-center justify-end px-1 transition-all"><div className="w-4 h-4 rounded-full bg-white shadow-sm" /></button>
+                ) : (
+                   <button onClick={() => onConnectNew(p)} className="text-[10px] font-black uppercase tracking-widest bg-white/10 px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors">Connect</button>
+                )}
+              </div>
             );
           })}
         </div>
@@ -278,13 +288,29 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
 
-  // Check onboarding
+  const [connectingPlatform, setConnectingPlatform] = useState<Platform | null>(null);
+  const router = useRouter();
+
+  // Check onboarding and fetch profile
   useEffect(() => {
-    if (hasCompletedOnboarding()) {
-      setConnectedIds(getConnectedPlatforms());
-      setShowOnboarding(false);
-    }
-  }, []);
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get("/api/user/profile");
+        if (res.data.user) {
+          const platforms = res.data.user.connectedPlatforms || [];
+          setConnectedIds(platforms);
+          setShowOnboarding(platforms.length === 0);
+        }
+      } catch (err: any) {
+        if (err.response?.status === 401) {
+          router.push("/login");
+        } else {
+          setShowOnboarding(true);
+        }
+      }
+    };
+    fetchUser();
+  }, [router]);
 
   // Fetch platform data
   const loadPlatformData = useCallback(async (ids: string[]) => {
@@ -317,12 +343,49 @@ export default function Home() {
   }, []);
 
   const handleOnboardingComplete = (ids: string[]) => { setConnectedIds(ids); setShowOnboarding(false); };
-  const handleUpdatePlatforms = (ids: string[]) => { setConnectedPlatforms(ids); setConnectedIds(ids); setShowSettings(false); setActiveFilter("all"); };
+  
+  const handleUpdatePlatforms = async (ids: string[]) => { 
+    try {
+      await axios.post("/api/user/platforms", { platforms: ids });
+      setConnectedIds(ids); 
+      setShowSettings(false); 
+      setActiveFilter("all"); 
+    } catch (err) {
+      console.error("Failed to update platforms", err);
+    }
+  };
 
-  // Play trailer: opens YouTube search in a new tab
-  const playTrailer = (movie: Movie) => {
+  const handleConnectPlatform = (platform: Platform) => {
+    setConnectingPlatform(platform);
+  };
+
+  const onConnectionSuccess = async () => {
+    if (!connectingPlatform) return;
+    const newIds = [...connectedIds, connectingPlatform.id];
+    await handleUpdatePlatforms(newIds);
+    setConnectingPlatform(null);
+  };
+
+  // Play logic: links to actual platform when possible
+  const playTrailer = (movie: Movie, platform?: Platform) => {
     setSelectedMovie(null);
-    window.open(movie.trailerUrl, "_blank", "noopener,noreferrer");
+    if (platform) {
+      // Dynamic link generation for real platform playback
+      let url = "";
+      const query = encodeURIComponent(movie.title);
+      switch(platform.id) {
+        case "netflix": url = `https://www.netflix.com/search?q=${query}`; break;
+        case "disney": url = `https://www.disneyplus.com/search?q=${query}`; break;
+        case "prime": url = `https://www.amazon.com/s?k=${query}&i=instant-video`; break;
+        case "hbo": url = `https://www.max.com/search/${query}`; break;
+        case "hulu": url = `https://www.hulu.com/search?q=${query}`; break;
+        case "apple": url = `https://tv.apple.com/search?term=${query}`; break;
+        default: url = movie.trailerUrl;
+      }
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      window.open(movie.trailerUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   // Genre filter helper
@@ -358,7 +421,16 @@ export default function Home() {
       )}
 
       {/* Settings */}
-      {showSettings && <PlatformSettings connectedIds={connectedIds} onSave={handleUpdatePlatforms} onClose={() => setShowSettings(false)} />}
+      {showSettings && <PlatformSettings connectedIds={connectedIds} onSave={handleUpdatePlatforms} onClose={() => setShowSettings(false)} onConnectNew={handleConnectPlatform} />}
+
+      {/* Connection Handshake */}
+      {connectingPlatform && (
+        <ConnectionModal 
+          platform={connectingPlatform} 
+          onSuccess={onConnectionSuccess} 
+          onCancel={() => setConnectingPlatform(null)} 
+        />
+      )}
 
       {/* Nav */}
       <nav className="fixed top-0 w-full z-[100] flex items-center justify-between px-6 md:px-14 py-4 transition-all duration-500" style={{ backgroundColor: `rgba(13,12,17,${navOpacity})`, backdropFilter: navOpacity > 0.1 ? "blur(20px)" : "none" }}>
@@ -413,7 +485,7 @@ export default function Home() {
                   </div>
                   <p className="text-gray-400 text-sm md:text-base mb-8 line-clamp-2 max-w-xl">{heroMovie.description}</p>
                   <div className="flex gap-3">
-                    <button onClick={() => playTrailer(heroMovie)} className="bg-white text-black px-8 md:px-12 py-3.5 rounded-xl font-black text-sm hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-lg uppercase tracking-wider">▶ Play</button>
+                    <button onClick={() => playTrailer(heroMovie, PLATFORMS.find(p => p.id === Object.keys(platformData)[0]))} className="bg-white text-black px-8 md:px-12 py-3.5 rounded-xl font-black text-sm hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-lg uppercase tracking-wider">▶ Play</button>
                     <button onClick={() => { setSelectedMovie(heroMovie); setSelectedMoviePlatform(connectedPlatforms[0]); }} className="bg-white/5 backdrop-blur-xl text-white px-8 md:px-12 py-3.5 rounded-xl font-black text-sm border border-white/10 hover:bg-white/10 transition-all uppercase tracking-wider">ⓘ Info</button>
                   </div>
                 </div>
@@ -487,13 +559,13 @@ export default function Home() {
                   return (
                     <div key={pId}>
                       {trendingFiltered.length > 0 && (
-                        <MovieRow title={`${p.name} — Trending`} movies={trendingFiltered} onPlay={playTrailer} onSelect={(m) => { setSelectedMovie(m); setSelectedMoviePlatform(p); }} platformColor={p.color} platform={p} />
+                        <MovieRow title={`${p.name} — Trending`} movies={trendingFiltered} onPlay={(m) => playTrailer(m, p)} onSelect={(m) => { setSelectedMovie(m); setSelectedMoviePlatform(p); }} platformColor={p.color} platform={p} />
                       )}
                       {popularFiltered.length > 0 && (
-                        <MovieRow title={`${p.name} — Popular`} movies={popularFiltered} onPlay={playTrailer} onSelect={(m) => { setSelectedMovie(m); setSelectedMoviePlatform(p); }} platformColor={p.color} platform={p} />
+                        <MovieRow title={`${p.name} — Popular`} movies={popularFiltered} onPlay={(m) => playTrailer(m, p)} onSelect={(m) => { setSelectedMovie(m); setSelectedMoviePlatform(p); }} platformColor={p.color} platform={p} />
                       )}
                       {newFiltered.length > 0 && (
-                        <MovieRow title={`${p.name} — New Releases`} movies={newFiltered} onPlay={playTrailer} onSelect={(m) => { setSelectedMovie(m); setSelectedMoviePlatform(p); }} platformColor={p.color} platform={p} />
+                        <MovieRow title={`${p.name} — New Releases`} movies={newFiltered} onPlay={(m) => playTrailer(m, p)} onSelect={(m) => { setSelectedMovie(m); setSelectedMoviePlatform(p); }} platformColor={p.color} platform={p} />
                       )}
                     </div>
                   );
