@@ -51,13 +51,13 @@ function OnboardingScreen({ onComplete }: { onComplete: (ids: string[]) => void 
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0C11] text-white flex flex-col items-center justify-center px-6 selection:bg-purple-500/30 relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-600/10 rounded-full blur-[200px] pointer-events-none" />
+    <div className="min-h-screen bg-[#0D0C11] text-white flex flex-col items-center justify-center px-6 selection:bg-green-500/30 relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-600/10 rounded-full blur-[200px] pointer-events-none" />
       <div className={`relative z-10 max-w-3xl w-full text-center transition-all duration-1000 ${animateIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-        <div className="text-4xl md:text-5xl font-black text-purple-600 tracking-tighter mb-3">CineNova</div>
+        <div className="text-4xl md:text-5xl font-black text-green-600 tracking-tighter mb-3">CineNova</div>
         <div className="text-xs font-black uppercase tracking-[0.4em] text-gray-500 mb-12">Your Streaming Hub</div>
         <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-4 leading-tight">
-          Connect Your <span className="bg-gradient-to-r from-purple-400 to-violet-600 bg-clip-text text-transparent">Subscriptions</span>
+          Connect Your <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Subscriptions</span>
         </h1>
         <p className="text-gray-400 text-base md:text-lg mb-12 max-w-lg mx-auto leading-relaxed">
           Select the platforms you subscribe to. We&apos;ll bring all your movies and shows into one unified experience.
@@ -85,7 +85,7 @@ function OnboardingScreen({ onComplete }: { onComplete: (ids: string[]) => void 
           })}
         </div>
         <button onClick={handleContinue} disabled={selected.size === 0}
-          className={`px-14 py-5 rounded-2xl font-black text-lg uppercase tracking-wider transition-all transform active:scale-95 ${selected.size > 0 ? "bg-purple-600 text-white hover:bg-purple-500 shadow-[0_20px_60px_rgba(147,51,234,0.3)]" : "bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed"}`}>
+          className={`px-14 py-5 rounded-2xl font-black text-lg uppercase tracking-wider transition-all transform active:scale-95 ${selected.size > 0 ? "bg-green-600 text-white hover:bg-green-500 shadow-[0_20px_60px_rgba(147,51,234,0.3)]" : "bg-white/5 text-gray-600 border border-white/5 cursor-not-allowed"}`}>
           {selected.size === 0 ? "Select at least one platform" : `Continue with ${selected.size} platform${selected.size > 1 ? "s" : ""}`}
         </button>
         <p className="text-gray-600 text-xs font-bold mt-4">You can change this anytime in settings</p>
@@ -131,7 +131,7 @@ function MovieDetailPanel({ movie, onClose, onPlay, platform }: { movie: Movie; 
           )}
           <p className="text-gray-400 text-sm leading-relaxed mb-8 line-clamp-4">{movie.description || "No description available."}</p>
           <div className="flex gap-4">
-            <button onClick={() => onPlay(movie)} className="bg-white text-black px-8 py-3.5 rounded-xl font-black text-sm hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 uppercase tracking-wider flex items-center gap-2">
+            <button onClick={() => onPlay(movie)} className="bg-white text-black px-8 py-3.5 rounded-xl font-black text-sm hover:bg-green-600 hover:text-white transition-all transform active:scale-95 uppercase tracking-wider flex items-center gap-2">
               ▶ Watch Trailer
             </button>
             <button className="bg-white/5 text-white px-6 py-3.5 rounded-xl font-black text-sm border border-white/10 hover:bg-white/10 transition-all">+ My List</button>
@@ -252,7 +252,7 @@ function PlatformSettings({ connectedIds, onSave, onClose }: { connectedIds: str
           })}
         </div>
         <button onClick={() => selected.size > 0 && onSave(Array.from(selected))} disabled={selected.size === 0}
-          className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all ${selected.size > 0 ? "bg-purple-600 text-white hover:bg-purple-500" : "bg-white/5 text-gray-600 cursor-not-allowed"}`}>
+          className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all ${selected.size > 0 ? "bg-green-600 text-white hover:bg-green-500" : "bg-white/5 text-gray-600 cursor-not-allowed"}`}>
           Save Changes ({selected.size} connected)
         </button>
       </div>
@@ -349,7 +349,7 @@ export default function Home() {
   const visiblePlatforms = activeFilter === "all" ? connectedIds : [activeFilter];
 
   return (
-    <main className="min-h-screen bg-[#0D0C11] text-white overflow-x-hidden selection:bg-purple-500/30">
+    <main className="min-h-screen bg-[#0D0C11] text-white overflow-x-hidden selection:bg-green-500/30">
       <AmbientGlow color={activeColor} />
 
       {/* Detail panel */}
@@ -363,7 +363,7 @@ export default function Home() {
       {/* Nav */}
       <nav className="fixed top-0 w-full z-[100] flex items-center justify-between px-6 md:px-14 py-4 transition-all duration-500" style={{ backgroundColor: `rgba(13,12,17,${navOpacity})`, backdropFilter: navOpacity > 0.1 ? "blur(20px)" : "none" }}>
         <div className="flex items-center gap-5">
-          <div className="text-2xl md:text-3xl font-black text-purple-600 tracking-tighter cursor-pointer hover:opacity-80 transition-opacity" onClick={() => { setSearchQuery(""); setIsSearching(false); }}>CineNova</div>
+          <div className="text-2xl md:text-3xl font-black text-green-600 tracking-tighter cursor-pointer hover:opacity-80 transition-opacity" onClick={() => { setSearchQuery(""); setIsSearching(false); }}>CineNova</div>
           <div className="hidden md:flex items-center gap-1.5">
             {connectedPlatforms.map((p) => (
               <div key={p.id} className="w-5 h-5 rounded-sm flex items-center justify-center text-white text-[8px] font-black opacity-50 hover:opacity-100 transition-opacity cursor-pointer" style={{ backgroundColor: p.color }} onClick={() => setActiveFilter(p.id)} />
@@ -373,7 +373,7 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <div className="relative">
             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs">🔍</div>
-            <input type="text" placeholder="Search..." className="bg-white/[0.04] border border-white/10 pl-9 pr-4 py-2.5 rounded-xl w-44 md:w-72 focus:w-56 md:focus:w-96 focus:outline-none focus:border-purple-500/50 transition-all duration-500 placeholder:text-gray-600 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            <input type="text" placeholder="Search..." className="bg-white/[0.04] border border-white/10 pl-9 pr-4 py-2.5 rounded-xl w-44 md:w-72 focus:w-56 md:focus:w-96 focus:outline-none focus:border-green-500/50 transition-all duration-500 placeholder:text-gray-600 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           </div>
           <button onClick={() => setShowSettings(true)} className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-sm hover:bg-white/10 transition-all" title="Manage platforms">⚙</button>
         </div>
@@ -413,7 +413,7 @@ export default function Home() {
                   </div>
                   <p className="text-gray-400 text-sm md:text-base mb-8 line-clamp-2 max-w-xl">{heroMovie.description}</p>
                   <div className="flex gap-3">
-                    <button onClick={() => playTrailer(heroMovie)} className="bg-white text-black px-8 md:px-12 py-3.5 rounded-xl font-black text-sm hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 shadow-lg uppercase tracking-wider">▶ Play</button>
+                    <button onClick={() => playTrailer(heroMovie)} className="bg-white text-black px-8 md:px-12 py-3.5 rounded-xl font-black text-sm hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-lg uppercase tracking-wider">▶ Play</button>
                     <button onClick={() => { setSelectedMovie(heroMovie); setSelectedMoviePlatform(connectedPlatforms[0]); }} className="bg-white/5 backdrop-blur-xl text-white px-8 md:px-12 py-3.5 rounded-xl font-black text-sm border border-white/10 hover:bg-white/10 transition-all uppercase tracking-wider">ⓘ Info</button>
                   </div>
                 </div>
@@ -425,8 +425,8 @@ export default function Home() {
               {/* Platform filters */}
               <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide px-6 md:px-14 pt-3 pb-2">
                 <button onClick={() => setActiveFilter("all")}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all flex-shrink-0 border ${activeFilter === "all" ? "bg-purple-600/20 border-purple-500/30 text-purple-400" : "bg-white/[0.02] border-white/[0.05] text-gray-500 hover:text-white hover:bg-white/[0.04]"}`}>
-                  <span className="w-5 h-5 rounded-md bg-purple-600 flex items-center justify-center text-white text-[8px]">🌐</span>
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all flex-shrink-0 border ${activeFilter === "all" ? "bg-green-600/20 border-green-500/30 text-green-400" : "bg-white/[0.02] border-white/[0.05] text-gray-500 hover:text-white hover:bg-white/[0.04]"}`}>
+                  <span className="w-5 h-5 rounded-md bg-green-600 flex items-center justify-center text-white text-[8px]">🌐</span>
                   All ({connectedIds.length})
                 </button>
                 <div className="w-px h-5 bg-white/10 flex-shrink-0 mx-0.5" />
@@ -517,7 +517,7 @@ export default function Home() {
             {/* Footer */}
             <footer className="border-t border-white/5 py-10 px-6 md:px-14 relative z-30">
               <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="text-xl font-black text-purple-600 tracking-tighter">CineNova</div>
+                <div className="text-xl font-black text-green-600 tracking-tighter">CineNova</div>
                 <div className="flex items-center gap-2">
                   {connectedPlatforms.map((p) => (<div key={p.id} className="w-6 h-6 rounded-md flex items-center justify-center text-white text-[9px] font-black opacity-40" style={{ backgroundColor: p.color }}>{p.icon}</div>))}
                 </div>

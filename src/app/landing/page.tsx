@@ -26,7 +26,7 @@ function FloatingParticles() {
       {particles.map((p, i) => (
         <div
           key={i}
-          className="absolute rounded-full bg-purple-500/20"
+          className="absolute rounded-full bg-green-500/20"
           style={{
             width: `${p.w}px`,
             height: `${p.h}px`,
@@ -116,11 +116,11 @@ function ScrollReveal({ children, className = "", delay = 0 }: { children: React
 function FeatureCard({ icon, title, description, delay }: { icon: string; title: string; description: string; delay: number }) {
   return (
     <ScrollReveal delay={delay}>
-      <div className="group relative bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-[2rem] p-8 md:p-10 hover:bg-white/[0.06] hover:border-purple-500/30 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(147,51,234,0.15)]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center text-2xl shadow-[0_10px_40px_rgba(147,51,234,0.5)] group-hover:scale-110 transition-transform duration-500">
+      <div className="group relative bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-[2rem] p-8 md:p-10 hover:bg-white/[0.06] hover:border-green-500/30 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(147,51,234,0.15)]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center text-2xl shadow-[0_10px_40px_rgba(147,51,234,0.5)] group-hover:scale-110 transition-transform duration-500">
           {icon}
         </div>
-        <h3 className="text-xl md:text-2xl font-black mt-6 mb-4 tracking-tight uppercase group-hover:text-purple-400 transition-colors duration-500">{title}</h3>
+        <h3 className="text-xl md:text-2xl font-black mt-6 mb-4 tracking-tight uppercase group-hover:text-green-400 transition-colors duration-500">{title}</h3>
         <p className="text-gray-400 leading-relaxed text-base">{description}</p>
       </div>
     </ScrollReveal>
@@ -134,7 +134,7 @@ function PlatformCard({ name, color, icon, delay }: { name: string; color: strin
     <ScrollReveal delay={delay}>
       <div
         className={`group relative bg-white/[0.03] backdrop-blur-xl border rounded-[2rem] p-6 md:p-8 transition-all duration-700 hover:-translate-y-2 cursor-pointer ${
-          connected ? "border-green-500/40 shadow-[0_0_40px_rgba(34,197,94,0.1)]" : "border-white/[0.06] hover:border-purple-500/30"
+          connected ? "border-green-500/40 shadow-[0_0_40px_rgba(34,197,94,0.1)]" : "border-white/[0.06] hover:border-green-500/30"
         }`}
         onClick={() => setConnected(!connected)}
       >
@@ -152,7 +152,7 @@ function PlatformCard({ name, color, icon, delay }: { name: string; color: strin
             </span>
           </div>
         </div>
-        <div className={`h-1 rounded-full transition-all duration-700 ${connected ? "bg-green-500 w-full" : "bg-white/10 w-0 group-hover:w-full group-hover:bg-purple-500/50"}`} />
+        <div className={`h-1 rounded-full transition-all duration-700 ${connected ? "bg-green-500 w-full" : "bg-white/10 w-0 group-hover:w-full group-hover:bg-green-500/50"}`} />
       </div>
     </ScrollReveal>
   );
@@ -182,7 +182,7 @@ export default function LandingPage() {
   const navOpacity = Math.min(scrollY / 300, 0.95);
 
   return (
-    <main className="min-h-screen bg-[#0D0C11] text-white overflow-x-hidden selection:bg-purple-500/30">
+    <main className="min-h-screen bg-[#0D0C11] text-white overflow-x-hidden selection:bg-green-500/30">
       <FloatingParticles />
 
       {/* ═══════════════════════════════════════════════ */}
@@ -192,7 +192,7 @@ export default function LandingPage() {
         className="fixed top-0 w-full z-[100] flex items-center justify-between px-8 md:px-16 py-6 transition-all duration-500"
         style={{ backgroundColor: `rgba(13,12,17,${navOpacity})`, backdropFilter: navOpacity > 0.1 ? "blur(20px)" : "none" }}
       >
-        <div className="text-3xl md:text-4xl font-black text-purple-600 tracking-tighter cursor-pointer hover:opacity-80 transition-opacity">
+        <div className="text-3xl md:text-4xl font-black text-green-600 tracking-tighter cursor-pointer hover:opacity-80 transition-opacity">
           CineNova
         </div>
         <div className="flex items-center gap-4 md:gap-6">
@@ -202,7 +202,7 @@ export default function LandingPage() {
             </button>
           </Link>
           <Link href="/signup">
-            <button className="bg-purple-600 hover:bg-purple-500 text-white font-black px-5 md:px-8 py-2.5 rounded-xl transition-all transform active:scale-95 shadow-[0_10px_30px_rgba(147,51,234,0.3)] text-sm md:text-base uppercase tracking-wider">
+            <button className="bg-green-600 hover:bg-green-500 text-white font-black px-5 md:px-8 py-2.5 rounded-xl transition-all transform active:scale-95 shadow-[0_10px_30px_rgba(147,51,234,0.3)] text-sm md:text-base uppercase tracking-wider">
               Get Started
             </button>
           </Link>
@@ -215,7 +215,7 @@ export default function LandingPage() {
       <section className="relative min-h-screen flex items-center justify-center px-8 md:px-16 overflow-hidden">
         {/* Animated background orbs */}
         <div
-          className="absolute w-[700px] h-[700px] bg-purple-600/15 rounded-full blur-[150px] pointer-events-none"
+          className="absolute w-[700px] h-[700px] bg-green-600/15 rounded-full blur-[150px] pointer-events-none"
           style={{
             top: "20%",
             left: "20%",
@@ -224,7 +224,7 @@ export default function LandingPage() {
           }}
         />
         <div
-          className="absolute w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-[120px] pointer-events-none"
+          className="absolute w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"
           style={{
             bottom: "10%",
             right: "15%",
@@ -253,7 +253,7 @@ export default function LandingPage() {
             className="inline-block mb-8"
             style={{ transform: `translateY(${scrollY * -0.1}px)` }}
           >
-            <span className="text-purple-500 font-black tracking-[0.5em] uppercase text-xs md:text-sm bg-purple-500/10 border border-purple-500/20 px-6 py-3 rounded-full">
+            <span className="text-green-500 font-black tracking-[0.5em] uppercase text-xs md:text-sm bg-green-500/10 border border-green-500/20 px-6 py-3 rounded-full">
               ✦ The Future of Streaming
             </span>
           </div>
@@ -265,7 +265,7 @@ export default function LandingPage() {
             <span className="block bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent">
               Cine
             </span>
-            <span className="block bg-gradient-to-r from-purple-400 via-purple-600 to-violet-700 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-green-400 via-green-600 to-emerald-700 bg-clip-text text-transparent">
               Nova
             </span>
           </h1>
@@ -282,13 +282,13 @@ export default function LandingPage() {
             style={{ transform: `translateY(${scrollY * -0.02}px)` }}
           >
             <Link href="/signup">
-              <button className="group relative bg-white text-black px-12 md:px-16 py-5 rounded-2xl font-black text-lg hover:bg-purple-600 hover:text-white transition-all transform active:scale-95 shadow-[0_20px_50px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(147,51,234,0.4)] uppercase tracking-wider overflow-hidden">
+              <button className="group relative bg-white text-black px-12 md:px-16 py-5 rounded-2xl font-black text-lg hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-[0_20px_50px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(147,51,234,0.4)] uppercase tracking-wider overflow-hidden">
                 <span className="relative z-10">Start Watching Free</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </button>
             </Link>
             <Link href="/login">
-              <button className="bg-white/5 backdrop-blur-xl text-white px-12 md:px-16 py-5 rounded-2xl font-black text-lg border border-white/10 hover:bg-white/10 hover:border-purple-500/30 transition-all uppercase tracking-wider">
+              <button className="bg-white/5 backdrop-blur-xl text-white px-12 md:px-16 py-5 rounded-2xl font-black text-lg border border-white/10 hover:bg-white/10 hover:border-green-500/30 transition-all uppercase tracking-wider">
                 Sign In
               </button>
             </Link>
@@ -306,7 +306,7 @@ export default function LandingPage() {
               ].map((poster, i) => (
                 <div
                   key={i}
-                  className="w-28 md:w-44 lg:w-52 aspect-[2/3] rounded-2xl md:rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl hover:scale-110 hover:z-10 hover:border-purple-500/50 transition-all duration-700 cursor-pointer"
+                  className="w-28 md:w-44 lg:w-52 aspect-[2/3] rounded-2xl md:rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl hover:scale-110 hover:z-10 hover:border-green-500/50 transition-all duration-700 cursor-pointer"
                   style={{
                     transform: `rotate(${poster.rotation}deg) translateY(${poster.y + scrollY * 0.03}px)`,
                     transition: "transform 0.5s ease-out",
@@ -330,7 +330,7 @@ export default function LandingPage() {
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 animate-bounce">
           <span className="text-gray-500 text-xs font-bold uppercase tracking-[0.3em]">Scroll</span>
           <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center pt-2">
-            <div className="w-1.5 h-3 bg-purple-500 rounded-full animate-pulse" />
+            <div className="w-1.5 h-3 bg-green-500 rounded-full animate-pulse" />
           </div>
         </div>
       </section>
@@ -359,15 +359,15 @@ export default function LandingPage() {
       {/* ═══════════════════════════════════════════════ */}
       <section className="relative py-32 px-8 md:px-16">
         {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-600/5 rounded-full blur-[200px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-600/5 rounded-full blur-[200px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal>
             <div className="text-center mb-24">
-              <span className="text-purple-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">Why CineNova</span>
+              <span className="text-green-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">Why CineNova</span>
               <h2 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase leading-[0.9]">
                 All Your Streams<br />
-                <span className="bg-gradient-to-r from-purple-400 to-violet-600 bg-clip-text text-transparent">One Hub</span>
+                <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">One Hub</span>
               </h2>
             </div>
           </ScrollReveal>
@@ -420,17 +420,17 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <ScrollReveal>
-              <span className="text-purple-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">Seamless Experience</span>
+              <span className="text-green-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">Seamless Experience</span>
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] mb-8">
                 One Account.<br />
-                <span className="bg-gradient-to-r from-purple-400 to-violet-600 bg-clip-text text-transparent">Every Device.</span>
+                <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Every Device.</span>
               </h2>
               <p className="text-gray-400 text-lg md:text-xl leading-relaxed mb-10 max-w-lg">
                 Start watching on your TV, pick up where you left off on your phone. CineNova syncs seamlessly across all your devices.
               </p>
               <div className="flex flex-wrap gap-4">
                 {["📺 Smart TV", "💻 Laptop", "📱 Mobile", "🎮 Console"].map((device, i) => (
-                  <span key={i} className="bg-white/5 border border-white/10 px-5 py-3 rounded-xl text-sm font-bold text-gray-300 hover:border-purple-500/30 hover:bg-purple-500/5 transition-all cursor-default">
+                  <span key={i} className="bg-white/5 border border-white/10 px-5 py-3 rounded-xl text-sm font-bold text-gray-300 hover:border-green-500/30 hover:bg-green-500/5 transition-all cursor-default">
                     {device}
                   </span>
                 ))}
@@ -440,8 +440,8 @@ export default function LandingPage() {
             <ScrollReveal delay={200}>
               <div className="relative">
                 {/* Main "screen" mockup */}
-                <div className="relative bg-gradient-to-br from-purple-900/30 to-violet-900/20 rounded-[2rem] border border-white/10 overflow-hidden aspect-video shadow-[0_40px_100px_rgba(147,51,234,0.15)]">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/10 via-transparent to-violet-600/10" />
+                <div className="relative bg-gradient-to-br from-green-900/30 to-emerald-900/20 rounded-[2rem] border border-white/10 overflow-hidden aspect-video shadow-[0_40px_100px_rgba(147,51,234,0.15)]">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-green-600/10 via-transparent to-emerald-600/10" />
                   <div className="p-6 md:p-8 relative z-10">
                     <div className="flex items-center gap-2 mb-6">
                       <div className="w-3 h-3 rounded-full bg-red-500/60" />
@@ -453,7 +453,7 @@ export default function LandingPage() {
                       <div className="h-4 bg-white/5 rounded-full w-1/2" />
                       <div className="mt-6 grid grid-cols-3 gap-3">
                         {[1, 2, 3].map((i) => (
-                          <div key={i} className="aspect-[2/3] bg-purple-500/10 rounded-xl border border-white/5 animate-pulse" style={{ animationDelay: `${i * 0.5}s` }} />
+                          <div key={i} className="aspect-[2/3] bg-green-500/10 rounded-xl border border-white/5 animate-pulse" style={{ animationDelay: `${i * 0.5}s` }} />
                         ))}
                       </div>
                     </div>
@@ -462,11 +462,11 @@ export default function LandingPage() {
 
                 {/* Floating phone mockup */}
                 <div className="absolute -bottom-6 -right-6 md:-bottom-8 md:-right-8 w-28 md:w-36 bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl border border-white/10 p-2 md:p-3 shadow-2xl transform rotate-6 hover:rotate-0 transition-transform duration-700">
-                  <div className="aspect-[9/16] bg-gradient-to-br from-purple-900/40 to-violet-900/30 rounded-2xl overflow-hidden">
+                  <div className="aspect-[9/16] bg-gradient-to-br from-green-900/40 to-emerald-900/30 rounded-2xl overflow-hidden">
                     <div className="p-2 space-y-2 mt-4">
                       <div className="h-2 bg-white/10 rounded-full w-3/4" />
                       <div className="h-2 bg-white/5 rounded-full w-1/2" />
-                      <div className="mt-3 aspect-video bg-purple-500/15 rounded-lg" />
+                      <div className="mt-3 aspect-video bg-green-500/15 rounded-lg" />
                     </div>
                   </div>
                 </div>
@@ -480,15 +480,15 @@ export default function LandingPage() {
       {/* 🔗 CONNECT YOUR PLATFORMS SECTION               */}
       {/* ═══════════════════════════════════════════════ */}
       <section className="relative py-32 px-8 md:px-16">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-green-500/30 to-transparent" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal>
             <div className="text-center mb-8">
-              <span className="text-purple-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">Streaming Hub</span>
+              <span className="text-green-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">Streaming Hub</span>
               <h2 className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase leading-[0.9]">
                 Connect Your<br />
-                <span className="bg-gradient-to-r from-purple-400 to-violet-600 bg-clip-text text-transparent">Platforms</span>
+                <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Platforms</span>
               </h2>
             </div>
             <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto text-center mb-16 leading-relaxed">
@@ -516,8 +516,8 @@ export default function LandingPage() {
                   { step: "03", title: "Enjoy", desc: "Click play and we'll launch the right app. Seamless, effortless entertainment." },
                 ].map((item, i) => (
                   <div key={i} className="text-center group">
-                    <div className="text-5xl font-black text-purple-600/30 mb-4 group-hover:text-purple-500/60 transition-colors">{item.step}</div>
-                    <h4 className="text-xl font-black uppercase tracking-tight mb-3 group-hover:text-purple-400 transition-colors">{item.title}</h4>
+                    <div className="text-5xl font-black text-green-600/30 mb-4 group-hover:text-green-500/60 transition-colors">{item.step}</div>
+                    <h4 className="text-xl font-black uppercase tracking-tight mb-3 group-hover:text-green-400 transition-colors">{item.title}</h4>
                     <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 ))}
@@ -534,9 +534,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-20">
-              <span className="text-purple-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">What People Say</span>
+              <span className="text-green-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">What People Say</span>
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-                Loved by <span className="bg-gradient-to-r from-purple-400 to-violet-600 bg-clip-text text-transparent">Millions</span>
+                Loved by <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Millions</span>
               </h2>
             </div>
           </ScrollReveal>
@@ -563,15 +563,15 @@ export default function LandingPage() {
               },
             ].map((testimonial, i) => (
               <ScrollReveal key={i} delay={i * 200}>
-                <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-[2rem] p-8 md:p-10 hover:border-purple-500/20 transition-all duration-500">
+                <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-[2rem] p-8 md:p-10 hover:border-green-500/20 transition-all duration-500">
                   <div className="flex items-center gap-1 mb-6">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <span key={star} className="text-purple-500 text-lg">★</span>
+                      <span key={star} className="text-green-500 text-lg">★</span>
                     ))}
                   </div>
                   <p className="text-gray-300 text-base leading-relaxed mb-8 italic">&ldquo;{testimonial.quote}&rdquo;</p>
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-violet-700 flex items-center justify-center font-black text-sm">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-700 flex items-center justify-center font-black text-sm">
                       {testimonial.avatar}
                     </div>
                     <div>
@@ -591,20 +591,20 @@ export default function LandingPage() {
       {/* ═══════════════════════════════════════════════ */}
       <section className="relative py-32 px-8 md:px-16 overflow-hidden">
         {/* CTA Background effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/15 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-900/10 to-transparent pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-600/15 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <ScrollReveal>
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter uppercase leading-[0.85] mb-8">
               Ready to<br />
-              <span className="bg-gradient-to-r from-purple-400 via-violet-500 to-purple-600 bg-clip-text text-transparent">Start Watching?</span>
+              <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 bg-clip-text text-transparent">Start Watching?</span>
             </h2>
             <p className="text-gray-400 text-lg md:text-xl max-w-xl mx-auto mb-12 leading-relaxed">
               Join millions of users. Create your account in seconds, connect your platforms, and unify your streaming world.
             </p>
             <Link href="/signup">
-              <button className="group relative bg-purple-600 hover:bg-purple-500 text-white px-16 py-6 rounded-2xl font-black text-xl uppercase tracking-wider transition-all transform active:scale-95 shadow-[0_20px_60px_rgba(147,51,234,0.4)] hover:shadow-[0_30px_80px_rgba(147,51,234,0.5)]">
+              <button className="group relative bg-green-600 hover:bg-green-500 text-white px-16 py-6 rounded-2xl font-black text-xl uppercase tracking-wider transition-all transform active:scale-95 shadow-[0_20px_60px_rgba(147,51,234,0.4)] hover:shadow-[0_30px_80px_rgba(147,51,234,0.5)]">
                 Create Free Account
                 <span className="ml-3 inline-block group-hover:translate-x-1 transition-transform">→</span>
               </button>
@@ -621,7 +621,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
             <div className="col-span-2 md:col-span-1">
-              <div className="text-3xl font-black text-purple-600 tracking-tighter mb-4">CineNova</div>
+              <div className="text-3xl font-black text-green-600 tracking-tighter mb-4">CineNova</div>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs">Your ultimate streaming hub. Connect Netflix, Disney+, Hulu, and more — all in one beautiful interface.</p>
             </div>
             {[
@@ -643,7 +643,7 @@ export default function LandingPage() {
                 <ul className="space-y-3">
                   {section.links.map((link, j) => (
                     <li key={j}>
-                      <a href="#" className="text-gray-500 hover:text-purple-400 text-sm font-medium transition-colors">{link}</a>
+                      <a href="#" className="text-gray-500 hover:text-green-400 text-sm font-medium transition-colors">{link}</a>
                     </li>
                   ))}
                 </ul>
@@ -654,7 +654,7 @@ export default function LandingPage() {
             <p className="text-gray-600 text-sm font-bold">© 2026 CineNova. All rights reserved.</p>
             <div className="flex items-center gap-6">
               {["Twitter", "Instagram", "YouTube", "Discord"].map((social, i) => (
-                <a key={i} href="#" className="text-gray-600 hover:text-purple-400 text-sm font-bold transition-colors">{social}</a>
+                <a key={i} href="#" className="text-gray-600 hover:text-green-400 text-sm font-bold transition-colors">{social}</a>
               ))}
             </div>
           </div>
