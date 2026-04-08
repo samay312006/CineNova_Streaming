@@ -24,7 +24,12 @@ export default function LoginPage() {
         router.push("/home");
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred during login.");
+      if (err.response?.status === 404) {
+        console.log("User not found, redirecting to signup...");
+        router.push("/signup");
+      } else {
+        setError(err.response?.data?.message || "An error occurred during login.");
+      }
     } finally {
       setIsLoading(false);
     }
