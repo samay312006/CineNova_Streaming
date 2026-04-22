@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Tech Project — CineNova</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a2e;
+      --muted: #555;
+      --accent: #16a34a;
+      --accent-light: #dcfce7;
+      --border: #e5e7eb;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --card-bg: #f8fafc;
+      --heading: #0f172a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    /* ── Cover Page ── */
+    .cover-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 40px;
+      background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 50%);
+      border-bottom: 3px solid var(--accent);
+      page-break-after: always;
+    }
+
+    .cover-page .vit-logo {
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      padding: 8px;
+      background: white;
+    }
+
+    .cover-page .university-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e40af;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 50px;
+    }
+
+    .cover-page .project-title {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--heading);
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+    }
+
+    .cover-page .project-subtitle {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 50px;
+    }
+
+    .cover-page .team-table {
+      border-collapse: collapse;
+      margin: 0 auto 40px;
+      font-size: 15px;
+    }
+
+    .cover-page .team-table th {
+      background: var(--accent);
+      color: white;
+      padding: 12px 30px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+    }
+
+    .cover-page .team-table td {
+      padding: 12px 30px;
+      border: 1px solid var(--border);
+      font-weight: 500;
+    }
+
+    .cover-page .course-info {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    /* ── Content Layout ── */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* ── Table of Contents ── */
+    .toc {
+      page-break-after: always;
+      margin-bottom: 60px;
+    }
+
+    .toc h2 {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--heading);
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 12px;
+      margin-bottom: 30px;
+    }
+
+    .toc-list {
+      list-style: none;
+      counter-reset: toc-counter;
+    }
+
+    .toc-list li {
+      counter-increment: toc-counter;
+      padding: 12px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .toc-list li::before {
+      content: counter(toc-counter, decimal-leading-zero);
+      font-weight: 800;
+      color: var(--accent);
+      font-size: 18px;
+      min-width: 35px;
+    }
+
+    .toc-list li a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .toc-list li a:hover {
+      color: var(--accent);
+    }
+
+    /* ── Headings ── */
+    h2.section-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--heading);
+      margin-top: 70px;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--accent);
+      page-break-before: always;
+    }
+
+    h2.section-title:first-of-type {
+      page-break-before: auto;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--heading);
+      margin-top: 36px;
+      margin-bottom: 14px;
+    }
+
+    h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--heading);
+      margin-top: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: #374151;
+    }
+
+    /* ── Screenshots ── */
+    .screenshot {
+      margin: 28px 0;
+      text-align: center;
+    }
+
+    .screenshot img {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .screenshot .caption {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    /* ── Code Blocks ── */
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 24px 28px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      margin: 20px 0 26px;
+      border: 1px solid #313244;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+    }
+
+    p code,
+    li code,
+    td code {
+      background: #f1f5f9;
+      color: #be185d;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 13px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* ── Syntax Colors ── */
+    .kw {
+      color: #cba6f7;
+    }
+
+    /* keywords */
+    .fn {
+      color: #89b4fa;
+    }
+
+    /* functions */
+    .str {
+      color: #a6e3a1;
+    }
+
+    /* strings */
+    .cm {
+      color: #6c7086;
+      font-style: italic;
+    }
+
+    /* comments */
+    .num {
+      color: #fab387;
+    }
+
+    /* numbers */
+    .op {
+      color: #89dceb;
+    }
+
+    /* operators */
+    .type {
+      color: #f9e2af;
+    }
+
+    /* types */
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 28px;
+      font-size: 14px;
+    }
+
+    th {
+      background: var(--accent);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    td {
+      padding: 11px 16px;
+      border: 1px solid var(--border);
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* ── Feature List ── */
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 10px 0;
+      padding-left: 8px;
+      border-bottom: 1px solid #f1f5f9;
+      font-weight: 500;
+    }
+
+    ul {
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    /* ── Info Box ── */
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin: 20px 0;
+      font-size: 14px;
+      color: #1e40af;
+    }
+
+    .info-box.important {
+      background: #fef3c7;
+      border-left-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .info-box strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ── File Structure ── */
+    .file-tree {
+      background: var(--code-bg);
+      color: #94a3b8;
+      padding: 24px 28px;
+      border-radius: 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.9;
+      margin: 20px 0 26px;
+      border: 1px solid #313244;
+    }
+
+    .file-tree .dir {
+      color: #89b4fa;
+      font-weight: 600;
+    }
+
+    .file-tree .file {
+      color: #a6e3a1;
+    }
+
+    .file-tree .desc {
+      color: #6c7086;
+    }
+
+    /* ── Flow Diagram ── */
+    .flow-diagram {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .flow-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .flow-box {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      border: 2px solid;
+    }
+
+    .flow-box.frontend {
+      background: #dbeafe;
+      border-color: #3b82f6;
+      color: #1e40af;
+    }
+
+    .flow-box.api {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #166534;
+    }
+
+    .flow-box.db {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .flow-box.ext {
+      background: #fce7f3;
+      border-color: #ec4899;
+      color: #9d174d;
+    }
+
+    .flow-arrow {
+      font-size: 20px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── Auth Flow ── */
+    .auth-flow {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .auth-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .auth-step:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      background: var(--accent);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-content strong {
+      color: var(--heading);
+      display: block;
+    }
+
+    .step-content span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      text-align: center;
+      padding: 40px;
+      margin-top: 60px;
+      border-top: 3px solid var(--accent);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body {
+        font-size: 12px;
+      }
+
+      .cover-page {
+        min-height: auto;
+        padding: 40px 20px;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      pre {
+        font-size: 11px;
+        padding: 14px;
+      }
+
+      .screenshot img {
+        max-width: 85%;
+      }
+
+      h2.section-title {
+        font-size: 22px;
+        margin-top: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- COVER PAGE                                          -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="cover-page">
+    <img src="C:\Users\Samay\OneDrive\Desktop\Web_Project\download.png" alt="VIT Logo" class="vit-logo" />
+    <div class="university-name">Vellore Institute of Technology</div>
+
+    <div class="project-title">CineNova</div>
+    <div class="project-subtitle">Unified Streaming Platform — Web Technology Project</div>
+
+    <table class="team-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Registration No.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Member 1</strong></td>
+          <td>Samay Ajay Sharma</td>
+          <td>24BIT0308</td>
+        </tr>
+        <tr>
+          <td><strong>Member 2</strong></td>
+          <td>Keshar Mishra</td>
+          <td>24BIT0417</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="course-info">
+      Course: Web Technology<br />
+      Academic Year: 2025–2026
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- TABLE OF CONTENTS                                   -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="content">
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol class="toc-list">
+        <li><a href="#sec1">Project Overview</a></li>
+        <li><a href="#sec2">Technology Stack</a></li>
+        <li><a href="#sec3">Project Architecture</a></li>
+        <li><a href="#sec4">Database Design</a></li>
+        <li><a href="#sec5">Landing Page</a></li>
+        <li><a href="#sec6">User Authentication — Signup</a></li>
+        <li><a href="#sec7">User Authentication — Login</a></li>
+        <li><a href="#sec8">Home Page &amp; Dashboard</a></li>
+        <li><a href="#sec9">API Routes &amp; Backend</a></li>
+        <li><a href="#sec10">External API Integration (OMDb)</a></li>
+        <li><a href="#sec11">Reusable Components</a></li>
+        <li><a href="#sec12">Conclusion</a></li>
+      </ol>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 1. PROJECT OVERVIEW                                 -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec1">1. Project Overview</h2>
+
+    <p><strong>CineNova</strong> is a full-stack web application that serves as a <strong>unified streaming platform
+        aggregator</strong>. It allows users to connect their streaming subscriptions (Netflix, Disney+, HBO Max, Amazon
+      Prime, Hulu, Apple TV+) and browse content from all platforms in a single, unified interface.</p>
+
+    <h3>Key Features</h3>
+    <ul class="feature-list">
+      <li>🔐 <strong>User Authentication</strong> — Secure signup/login with bcrypt password hashing</li>
+      <li>🔗 <strong>Platform Connection</strong> — Connect and manage multiple streaming subscriptions</li>
+      <li>🔍 <strong>Universal Search</strong> — Search movies/shows across all connected platforms</li>
+      <li>📋 <strong>Watchlist Management</strong> — Add/remove movies to a persistent watchlist stored in MongoDB</li>
+      <li>🎬 <strong>Real Movie Data</strong> — Integration with OMDb API for live movie posters, ratings, and
+        descriptions</li>
+      <li>📱 <strong>Responsive Design</strong> — Works seamlessly across desktop, tablet, and mobile</li>
+      <li>⚙️ <strong>Account Management</strong> — Settings modal with sign-out and account deletion</li>
+    </ul>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 2. TECHNOLOGY STACK                                 -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec2">2. Technology Stack</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Technology</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Frontend Framework</td>
+          <td>Next.js 16.1.6</td>
+          <td>Server-side rendering, file-based routing</td>
+        </tr>
+        <tr>
+          <td>UI Library</td>
+          <td>React 19.2.3</td>
+          <td>Component-based UI development</td>
+        </tr>
+        <tr>
+          <td>Language</td>
+          <td>TypeScript 5</td>
+          <td>Type safety and developer experience</td>
+        </tr>
+        <tr>
+          <td>Styling</td>
+          <td>TailwindCSS 4</td>
+          <td>Utility-first CSS framework</td>
+        </tr>
+        <tr>
+          <td>Database</td>
+          <td>MongoDB Atlas</td>
+          <td>Cloud-hosted NoSQL database</td>
+        </tr>
+        <tr>
+          <td>ODM</td>
+          <td>Mongoose 9.4.1</td>
+          <td>Schema-based MongoDB object modeling</td>
+        </tr>
+        <tr>
+          <td>Authentication</td>
+          <td>bcryptjs 3.0.3</td>
+          <td>Password hashing and verification</td>
+        </tr>
+        <tr>
+          <td>HTTP Client</td>
+          <td>Axios 1.13.5</td>
+          <td>API requests from client-side</td>
+        </tr>
+        <tr>
+          <td>Icons</td>
+          <td>Lucide React</td>
+          <td>Modern SVG icon library</td>
+        </tr>
+        <tr>
+          <td>External API</td>
+          <td>OMDb API</td>
+          <td>Movie and TV show data</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 3. PROJECT ARCHITECTURE                             -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec3">3. Project Architecture</h2>
+
+    <p>The project follows the <strong>Next.js App Router</strong> pattern with a clear separation of concerns between
+      frontend pages, backend API routes, and database operations.</p>
+
+    <h3>Application Flow</h3>
+
+    <div class="flow-diagram">
+      <p style="font-weight: 800; margin-bottom: 16px; color: var(--heading);">System Architecture</p>
+      <div class="flow-row">
+        <div class="flow-box frontend">Landing Page</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box frontend">Login / Signup</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box frontend">Home Dashboard</div>
+      </div>
+      <div style="font-size: 20px; color: #aaa; margin: 8px 0;">↕</div>
+      <div class="flow-row">
+        <div class="flow-box api">/api/auth/*</div>
+        <div class="flow-box api">/api/user/platforms</div>
+        <div class="flow-box api">/api/user/watchlist</div>
+        <div class="flow-box api">/api/user/profile</div>
+      </div>
+      <div style="font-size: 20px; color: #aaa; margin: 8px 0;">↕</div>
+      <div class="flow-row">
+        <div class="flow-box db">MongoDB Atlas (Users Collection)</div>
+        <div class="flow-box ext">OMDb API (Movie Data)</div>
+      </div>
+    </div>
+
+    <h3>File Structure</h3>
+
+    <div class="file-tree">
+      <span class="dir">src/</span><br />
+      ├── <span class="dir">app/</span><br />
+      │ ├── <span class="dir">api/</span><br />
+      │ │ ├── <span class="dir">auth/</span><br />
+      │ │ │ ├── <span class="file">login/route.ts</span> <span class="desc">&nbsp;&nbsp;# Login API
+        endpoint</span><br />
+      │ │ │ ├── <span class="file">signup/route.ts</span> <span class="desc">&nbsp;&nbsp;# Signup API
+        endpoint</span><br />
+      │ │ │ └── <span class="file">signout/route.ts</span> <span class="desc">&nbsp;# Signout API endpoint</span><br />
+      │ │ └── <span class="dir">user/</span><br />
+      │ │ &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">platforms/route.ts</span> <span class="desc"># Platform
+        management</span><br />
+      │ │ &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">watchlist/route.ts</span> <span class="desc"># Watchlist
+        CRUD</span><br />
+      │ │ &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">profile/route.ts</span> <span class="desc">&nbsp;&nbsp;# User
+        profile</span><br />
+      │ │ &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">delete/route.ts</span> <span class="desc">&nbsp;&nbsp;&nbsp;#
+        Account deletion</span><br />
+      │ ├── <span class="file">landing/page.tsx</span> <span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Public
+        landing page</span><br />
+      │ ├── <span class="file">login/page.tsx</span> <span
+        class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Login page</span><br />
+      │ ├── <span class="file">signup/page.tsx</span> <span class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#
+        Registration page</span><br />
+      │ ├── <span class="file">home/page.tsx</span> <span
+        class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Main dashboard</span><br />
+      │ ├── <span class="file">layout.tsx</span> <span
+        class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Root layout</span><br />
+      │ └── <span class="file">globals.css</span> <span
+        class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Global styles</span><br />
+      ├── <span class="dir">components/</span><br />
+      │ └── <span class="file">ConnectionModal.tsx</span> <span class="desc"># Platform connection modal</span><br />
+      └── <span class="dir">lib/</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="dir">models/</span><span class="file">User.ts</span> <span
+        class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Mongoose User schema</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file">mongodb.ts</span> <span
+        class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# DB connection
+        helper</span><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="file">tmdb.ts</span> <span
+        class="desc">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# OMDb
+        API integration</span>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 4. DATABASE DESIGN                                  -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec4">4. Database Design</h2>
+
+    <p>The application uses <strong>MongoDB Atlas</strong> (cloud) as the database, accessed through the
+      <strong>Mongoose</strong> ODM library.
+    </p>
+
+    <h3>User Schema</h3>
+    <pre><span class="kw">const</span> UserSchema = <span class="kw">new</span> mongoose.<span class="fn">Schema</span>(
+  {
+    <span class="str">name</span>: {
+      type: <span class="type">String</span>,
+      required: [<span class="kw">true</span>, <span class="str">'Please provide a name'</span>],
+    },
+    <span class="str">email</span>: {
+      type: <span class="type">String</span>,
+      required: [<span class="kw">true</span>, <span class="str">'Please provide an email'</span>],
+      unique: <span class="kw">true</span>,
+    },
+    <span class="str">password</span>: {
+      type: <span class="type">String</span>,
+      required: [<span class="kw">true</span>, <span class="str">'Please provide a password'</span>],
+    },
+    <span class="str">connectedPlatforms</span>: {
+      type: [<span class="type">String</span>],   <span class="cm">// e.g. ["netflix", "disney", "hbo"]</span>
+      default: [],
+    },
+    <span class="str">watchlist</span>: {
+      type: [<span class="type">String</span>],   <span class="cm">// Array of IMDB IDs</span>
+      default: [],
+    },
+  },
+  { timestamps: <span class="kw">true</span> }  <span class="cm">// Adds createdAt & updatedAt</span>
+);</pre>
+
+    <div class="info-box">
+      <strong>📝 Note</strong>
+      The <code>connectedPlatforms</code> field stores platform IDs as strings (e.g., <code>"netflix"</code>,
+      <code>"disney"</code>), while <code>watchlist</code> stores IMDB IDs (e.g., <code>"tt1234567"</code>) to reference
+      movies across platforms.
+    </div>
+
+    <h3>Database Connection — Singleton Pattern</h3>
+    <p>To prevent connection leaks during development hot-reloads, the connection is cached globally:</p>
+
+    <pre><span class="kw">let</span> cached = (<span class="kw">global</span> <span class="kw">as</span> <span class="type">any</span>).mongoose;
+
+<span class="kw">async function</span> <span class="fn">connectToDatabase</span>() {
+  <span class="kw">if</span> (cached.conn) <span class="kw">return</span> cached.conn;  <span class="cm">// Reuse existing</span>
+
+  <span class="kw">if</span> (!cached.promise) {
+    cached.promise = mongoose.<span class="fn">connect</span>(MONGODB_URI, {
+      bufferCommands: <span class="kw">false</span>,
+      serverSelectionTimeoutMS: <span class="num">10000</span>,
+    }).<span class="fn">then</span>((mongoose) =&gt; mongoose);
+  }
+
+  cached.conn = <span class="kw">await</span> cached.promise;
+  <span class="kw">return</span> cached.conn;
+}</pre>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 5. LANDING PAGE                                     -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec5">5. Landing Page</h2>
+
+    <p>The landing page is the first page users see. It features a modern, dark-themed design with floating particle
+      animations, scroll-based parallax effects, and interactive elements.</p>
+
+    <h3>Hero Section</h3>
+
+    <div class="screenshot">
+      <img src="images/landing_hero.png" alt="Landing Page Hero Section" />
+      <div class="caption">Fig 5.1 — Landing page hero section with CineNova branding and movie poster carousel</div>
+    </div>
+
+    <p>The hero features a large gradient title, a tagline, two CTA buttons, and a row of real movie posters that
+      respond to scroll position with a parallax effect.</p>
+
+    <h4>Key Code — Parallax Scroll &amp; Mouse Tracking</h4>
+
+    <pre><span class="kw">const</span> [scrollY, setScrollY] = <span class="fn">useState</span>(<span class="num">0</span>);
+<span class="kw">const</span> [mousePos, setMousePos] = <span class="fn">useState</span>({ x: <span class="num">0</span>, y: <span class="num">0</span> });
+
+<span class="fn">useEffect</span>(() =&gt; {
+  <span class="kw">const</span> handleScroll = () =&gt; <span class="fn">setScrollY</span>(window.scrollY);
+  <span class="kw">const</span> handleMouse = (e) =&gt; {
+    <span class="fn">setMousePos</span>({
+      x: (e.clientX / window.innerWidth - <span class="num">0.5</span>) * <span class="num">20</span>,
+      y: (e.clientY / window.innerHeight - <span class="num">0.5</span>) * <span class="num">20</span>,
+    });
+  };
+  window.<span class="fn">addEventListener</span>(<span class="str">"scroll"</span>, handleScroll);
+  window.<span class="fn">addEventListener</span>(<span class="str">"mousemove"</span>, handleMouse);
+}, []);
+
+<span class="cm">// Elements offset using scrollY and mousePos:</span>
+&lt;h1 style={{ transform: <span class="str">`translateY(${scrollY * -0.15}px)`</span> }}&gt;
+  CineNova
+&lt;/h1&gt;</pre>
+
+    <h3>Animated Stats &amp; Features Section</h3>
+
+    <div class="screenshot">
+      <img src="images/landing_stats_features.png" alt="Stats and Features" />
+      <div class="caption">Fig 5.2 — Animated counters and "All Your Streams, One Hub" feature heading</div>
+    </div>
+
+    <h4>Key Code — AnimatedCounter with IntersectionObserver</h4>
+
+    <pre><span class="kw">function</span> <span class="fn">AnimatedCounter</span>({ target, suffix }) {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(<span class="num">0</span>);
+  <span class="kw">const</span> ref = <span class="fn">useRef</span>(<span class="kw">null</span>);
+  <span class="kw">const</span> [started, setStarted] = <span class="fn">useState</span>(<span class="kw">false</span>);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">const</span> observer = <span class="kw">new</span> <span class="fn">IntersectionObserver</span>(
+      ([entry]) =&gt; {
+        <span class="kw">if</span> (entry.isIntersecting &amp;&amp; !started)
+          <span class="fn">setStarted</span>(<span class="kw">true</span>);
+      },
+      { threshold: <span class="num">0.3</span> }
+    );
+    <span class="kw">if</span> (ref.current) observer.<span class="fn">observe</span>(ref.current);
+    <span class="kw">return</span> () =&gt; observer.<span class="fn">disconnect</span>();
+  }, []);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="kw">if</span> (!started) <span class="kw">return</span>;
+    <span class="kw">let</span> current = <span class="num">0</span>;
+    <span class="kw">const</span> increment = target / <span class="num">60</span>;
+    <span class="kw">const</span> timer = <span class="fn">setInterval</span>(() =&gt; {
+      current += increment;
+      <span class="kw">if</span> (current &gt;= target) {
+        <span class="fn">setCount</span>(target); <span class="fn">clearInterval</span>(timer);
+      } <span class="kw">else</span> <span class="fn">setCount</span>(Math.<span class="fn">floor</span>(current));
+    }, <span class="num">25</span>);
+  }, [started, target]);
+
+  <span class="kw">return</span> &lt;div ref={ref}&gt;{count}{suffix}&lt;/div&gt;;
+}</pre>
+
+    <h3>Feature Cards</h3>
+
+    <div class="screenshot">
+      <img src="images/landing_features_cards.png" alt="Feature Cards" />
+      <div class="caption">Fig 5.3 — Six feature cards: Universal Connect, Universal Search, Smart Watchlists, AI
+        Recommendations, Watch Analytics, and Shared Profiles</div>
+    </div>
+
+    <p>Each feature card uses a <code>ScrollReveal</code> wrapper component that triggers a fade-in animation with
+      staggered delays using <code>IntersectionObserver</code>.</p>
+
+    <h3>Device Showcase &amp; Platform Section</h3>
+
+    <div class="screenshot">
+      <img src="images/landing_device_showcase.png" alt="Device Showcase" />
+      <div class="caption">Fig 5.4 — "One Account. Every Device." cross-device showcase section</div>
+    </div>
+
+    <div class="screenshot">
+      <img src="images/landing_platforms.png" alt="Connect Your Platforms" />
+      <div class="caption">Fig 5.5 — "Connect Your Platforms" section with interactive platform cards for Netflix,
+        Disney+, HBO Max, Amazon Prime, Hulu, and Apple TV+</div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 6. SIGNUP                                           -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec6">6. User Authentication — Signup</h2>
+
+    <div class="screenshot">
+      <img src="images/signup_page.png" alt="Signup Page" />
+      <div class="caption">Fig 6.1 — User registration form with name, email, password, and password confirmation fields
+      </div>
+    </div>
+
+    <p>The signup page collects the user's name, email, password, and password confirmation. It validates that the
+      passwords match before sending the request.</p>
+
+    <h3>Frontend — Form Handling</h3>
+
+    <pre><span class="kw">const</span> <span class="fn">handleSubmit</span> = <span class="kw">async</span> (e) =&gt; {
+  e.<span class="fn">preventDefault</span>();
+
+  <span class="cm">// Client-side validation</span>
+  <span class="kw">if</span> (password !== confirmPassword) {
+    <span class="fn">setError</span>(<span class="str">"Passwords do not match"</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="kw">const</span> response = <span class="kw">await</span> axios.<span class="fn">post</span>(<span class="str">"/api/auth/signup"</span>, {
+    name, email, password
+  });
+
+  <span class="kw">if</span> (response.status === <span class="num">201</span>) {
+    router.<span class="fn">push</span>(<span class="str">"/login"</span>);  <span class="cm">// Redirect on success</span>
+  }
+};</pre>
+
+    <h3>Backend — Signup API Route (<code>/api/auth/signup</code>)</h3>
+
+    <pre><span class="kw">export async function</span> <span class="fn">POST</span>(request: <span class="type">Request</span>) {
+  <span class="kw">const</span> { name, email, password } = <span class="kw">await</span> request.<span class="fn">json</span>();
+  <span class="kw">await</span> <span class="fn">connectToDatabase</span>();
+
+  <span class="cm">// Check if user already exists</span>
+  <span class="kw">const</span> existingUser = <span class="kw">await</span> User.<span class="fn">findOne</span>({ email });
+  <span class="kw">if</span> (existingUser) {
+    <span class="kw">return</span> NextResponse.<span class="fn">json</span>(
+      { message: <span class="str">'User already exists'</span> },
+      { status: <span class="num">409</span> }
+    );
+  }
+
+  <span class="cm">// Hash password with bcrypt (salt rounds = 10)</span>
+  <span class="kw">const</span> salt = <span class="kw">await</span> bcrypt.<span class="fn">genSalt</span>(<span class="num">10</span>);
+  <span class="kw">const</span> hashedPassword = <span class="kw">await</span> bcrypt.<span class="fn">hash</span>(password, salt);
+
+  <span class="cm">// Create user document in MongoDB</span>
+  <span class="kw">const</span> newUser = <span class="kw">await</span> User.<span class="fn">create</span>({
+    name, email, password: hashedPassword
+  });
+
+  <span class="cm">// Set HTTP-only session cookie</span>
+  response.cookies.<span class="fn">set</span>(<span class="str">'userId'</span>, newUser._id.<span class="fn">toString</span>(), {
+    httpOnly: <span class="kw">true</span>,            <span class="cm">// Not accessible via JS</span>
+    secure: process.env.NODE_ENV === <span class="str">'production'</span>,
+    maxAge: <span class="num">60</span> * <span class="num">60</span> * <span class="num">24</span> * <span class="num">7</span>,  <span class="cm">// 1 week</span>
+    path: <span class="str">'/'</span>,
+  });
+}</pre>
+
+    <div class="info-box important">
+      <strong>⚠️ Important — Security</strong>
+      Passwords are <strong>never stored in plain text</strong>. They are hashed using bcrypt with a salt factor of 10
+      before saving to the database. The session cookie is <code>httpOnly</code>, preventing XSS attacks from accessing
+      it.
+    </div>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 7. LOGIN                                            -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec7">7. User Authentication — Login</h2>
+
+    <div class="screenshot">
+      <img src="images/login_page.png" alt="Login Page" />
+      <div class="caption">Fig 7.1 — Login page with email and password fields, "Forgot Password" link, and redirect to
+        signup</div>
+    </div>
+
+    <p>The login page authenticates returning users by verifying their email and password against the database. If a
+      user is not found (404), they are automatically redirected to the signup page.</p>
+
+    <h3>Backend — Login API Route (<code>/api/auth/login</code>)</h3>
+
+    <pre><span class="kw">export async function</span> <span class="fn">POST</span>(request: <span class="type">Request</span>) {
+  <span class="kw">const</span> { email, password } = <span class="kw">await</span> request.<span class="fn">json</span>();
+  <span class="kw">await</span> <span class="fn">connectToDatabase</span>();
+
+  <span class="cm">// Find user by email</span>
+  <span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">findOne</span>({ email });
+  <span class="kw">if</span> (!user) {
+    <span class="kw">return</span> NextResponse.<span class="fn">json</span>(
+      { message: <span class="str">'User not found'</span> }, { status: <span class="num">404</span> }
+    );
+  }
+
+  <span class="cm">// Compare submitted password with stored hash</span>
+  <span class="kw">const</span> isMatch = <span class="kw">await</span> bcrypt.<span class="fn">compare</span>(password, user.password);
+  <span class="kw">if</span> (!isMatch) {
+    <span class="kw">return</span> NextResponse.<span class="fn">json</span>(
+      { message: <span class="str">'Invalid credentials'</span> }, { status: <span class="num">401</span> }
+    );
+  }
+
+  <span class="cm">// Set session cookie and return success</span>
+  response.cookies.<span class="fn">set</span>(<span class="str">'userId'</span>, user._id.<span class="fn">toString</span>(), {
+    httpOnly: <span class="kw">true</span>,
+    maxAge: <span class="num">60</span> * <span class="num">60</span> * <span class="num">24</span> * <span class="num">7</span>,
+    path: <span class="str">'/'</span>,
+  });
+}</pre>
+
+    <h3>Authentication Flow</h3>
+
+    <div class="auth-flow">
+      <div class="auth-step">
+        <div class="step-num">1</div>
+        <div class="step-content"><strong>User enters email &amp; password</strong><span>Frontend form validates inputs
+            then sends a POST request</span></div>
+      </div>
+      <div class="auth-step">
+        <div class="step-num">2</div>
+        <div class="step-content"><strong>API receives request →
+            <code>POST /api/auth/login</code></strong><span>Connects to MongoDB Atlas and queries
+            <code>User.findOne({ email })</code></span></div>
+      </div>
+      <div class="auth-step">
+        <div class="step-num">3</div>
+        <div class="step-content"><strong>Password verification</strong><span><code>bcrypt.compare()</code> securely
+            checks the submitted password against the stored hash</span></div>
+      </div>
+      <div class="auth-step">
+        <div class="step-num">4</div>
+        <div class="step-content"><strong>Session creation</strong><span>On success: HTTP-only cookie set with
+            <code>userId</code> → redirected to <code>/home</code></span></div>
+      </div>
+      <div class="auth-step">
+        <div class="step-num">5</div>
+        <div class="step-content"><strong>Error handling</strong><span>404 → redirect to signup | 401 → "Invalid
+            credentials" error displayed</span></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 8. HOME PAGE                                        -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec8">8. Home Page &amp; Dashboard</h2>
+
+    <p>The home page is the core of the application. It is a <strong>protected route</strong> — users are redirected to
+      <code>/login</code> if not authenticated. The page has two main states: an <strong>onboarding screen</strong>
+      (first-time users) and the <strong>main movie dashboard</strong>.
+    </p>
+
+    <h3>Onboarding — Platform Selection</h3>
+    <p>When a user logs in for the first time with no connected platforms, they see a platform selection screen:</p>
+
+    <pre><span class="kw">function</span> <span class="fn">OnboardingScreen</span>({ onComplete }) {
+  <span class="kw">const</span> [selected, setSelected] = <span class="fn">useState</span>(<span class="kw">new</span> <span class="type">Set</span>());
+
+  <span class="kw">const</span> <span class="fn">handleContinue</span> = <span class="kw">async</span> () =&gt; {
+    <span class="kw">const</span> ids = Array.<span class="fn">from</span>(selected);
+    <span class="cm">// Save selected platforms to database</span>
+    <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">"/api/user/platforms"</span>, {
+      method: <span class="str">"POST"</span>,
+      headers: { <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span> },
+      body: JSON.<span class="fn">stringify</span>({ platforms: ids }),
+    });
+    <span class="fn">onComplete</span>(ids);
+  };
+}</pre>
+
+    <h3>Movie Dashboard — Data Loading</h3>
+    <p>After onboarding, the dashboard fetches movie data from the OMDb API for each connected platform using
+      <code>Promise.all</code> for parallel loading:
+    </p>
+
+    <pre><span class="kw">const</span> <span class="fn">loadPlatformData</span> = <span class="fn">useCallback</span>(<span class="kw">async</span> (ids) =&gt; {
+  <span class="fn">setLoading</span>(<span class="kw">true</span>);
+  <span class="kw">const</span> data = {};
+  <span class="kw">await</span> Promise.<span class="fn">all</span>(ids.<span class="fn">map</span>(<span class="kw">async</span> (id) =&gt; {
+    <span class="kw">const</span> result = <span class="kw">await</span> <span class="fn">getPlatformData</span>(id);
+    <span class="kw">if</span> (result) data[id] = result;
+  }));
+  <span class="fn">setPlatformData</span>(data);
+  <span class="fn">setLoading</span>(<span class="kw">false</span>);
+}, []);</pre>
+
+    <h3>Genre Filtering &amp; Watchlist</h3>
+
+    <pre><span class="cm">// Filter movies by selected genre</span>
+<span class="kw">const</span> <span class="fn">filterByGenre</span> = (movies) =&gt; {
+  <span class="kw">if</span> (activeGenre === <span class="str">"All"</span>) <span class="kw">return</span> movies;
+  <span class="kw">return</span> movies.<span class="fn">filter</span>((m) =&gt;
+    m.genre.<span class="fn">toLowerCase</span>().<span class="fn">includes</span>(activeGenre.<span class="fn">toLowerCase</span>())
+  );
+};
+
+<span class="cm">// Toggle watchlist (add/remove from DB)</span>
+<span class="kw">const</span> <span class="fn">handleToggleWatchlist</span> = <span class="kw">async</span> (movie) =&gt; {
+  <span class="kw">if</span> (watchlistIds.<span class="fn">has</span>(movie.id)) {
+    <span class="kw">await</span> axios.<span class="fn">delete</span>(<span class="str">"/api/user/watchlist"</span>, {
+      data: { movieId: movie.id }
+    });
+  } <span class="kw">else</span> {
+    <span class="kw">await</span> axios.<span class="fn">post</span>(<span class="str">"/api/user/watchlist"</span>, {
+      movieId: movie.id
+    });
+  }
+};</pre>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 9. API ROUTES                                       -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec9">9. API Routes &amp; Backend</h2>
+
+    <p>All API routes follow RESTful conventions and use <strong>cookie-based authentication</strong>. Protected routes
+      read the <code>userId</code> cookie to identify the logged-in user.</p>
+
+    <h3>API Endpoints Summary</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Endpoint</th>
+          <th>Purpose</th>
+          <th>Auth</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/api/auth/signup</code></td>
+          <td>Register a new user</td>
+          <td>❌</td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/api/auth/login</code></td>
+          <td>Authenticate user</td>
+          <td>❌</td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/api/auth/signout</code></td>
+          <td>Clear session cookie</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td><code>GET</code></td>
+          <td><code>/api/user/profile</code></td>
+          <td>Get current user data</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/api/user/platforms</code></td>
+          <td>Update connected platforms</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/api/user/watchlist</code></td>
+          <td>Add movie to watchlist</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td><code>DELETE</code></td>
+          <td><code>/api/user/watchlist</code></td>
+          <td>Remove from watchlist</td>
+          <td>✅</td>
+        </tr>
+        <tr>
+          <td><code>DELETE</code></td>
+          <td><code>/api/user/delete</code></td>
+          <td>Delete user account</td>
+          <td>✅</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Watchlist API — MongoDB Atomic Operations</h3>
+    <p>Uses MongoDB's <code>$addToSet</code> (prevents duplicates) and <code>$pull</code> (removes items) operators for
+      data integrity:</p>
+
+    <pre><span class="cm">// ADD to watchlist — prevents duplicate entries</span>
+<span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">findByIdAndUpdate</span>(
+  userId,
+  { <span class="str">$addToSet</span>: { watchlist: movieId } },
+  { new: <span class="kw">true</span> }
+).<span class="fn">select</span>(<span class="str">'-password'</span>);  <span class="cm">// Exclude password from response</span>
+
+<span class="cm">// REMOVE from watchlist</span>
+<span class="kw">const</span> user = <span class="kw">await</span> User.<span class="fn">findByIdAndUpdate</span>(
+  userId,
+  { <span class="str">$pull</span>: { watchlist: movieId } },
+  { new: <span class="kw">true</span> }
+).<span class="fn">select</span>(<span class="str">'-password'</span>);</pre>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 10. OMDB API                                        -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec10">10. External API Integration (OMDb)</h2>
+
+    <p>The application integrates with the <strong>OMDb (Open Movie Database) API</strong> to fetch real movie data
+      including posters, ratings, genres, and descriptions.</p>
+
+    <h3>Movie Data Interface</h3>
+
+    <pre><span class="kw">export interface</span> <span class="type">Movie</span> {
+  id: <span class="type">string</span>;           <span class="cm">// IMDB ID (e.g., "tt1234567")</span>
+  title: <span class="type">string</span>;
+  poster_path: <span class="type">string</span>;  <span class="cm">// URL to movie poster image</span>
+  description: <span class="type">string</span>;  <span class="cm">// Plot summary</span>
+  year: <span class="type">string</span>;
+  rating: <span class="type">string</span>;       <span class="cm">// IMDB rating</span>
+  genre: <span class="type">string</span>;        <span class="cm">// Comma-separated genres</span>
+  runtime: <span class="type">string</span>;
+  match: <span class="type">number</span>;        <span class="cm">// Match percentage (85-100%)</span>
+  trailerUrl: <span class="type">string</span>;   <span class="cm">// YouTube search URL</span>
+}</pre>
+
+    <h3>Fetching Movie Data from OMDb</h3>
+
+    <pre><span class="kw">const</span> <span class="fn">fetchMovies</span> = <span class="kw">async</span> (list: <span class="type">string</span>[]) =&gt; {
+  <span class="kw">const</span> results = <span class="kw">await</span> Promise.<span class="fn">all</span>(
+    list.<span class="fn">map</span>(<span class="kw">async</span> (title) =&gt; {
+      <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(
+        <span class="str">`https://www.omdbapi.com/?t=${title}&apikey=${API_KEY}`</span>
+      );
+      <span class="kw">const</span> data = <span class="kw">await</span> res.<span class="fn">json</span>();
+      <span class="kw">if</span> (data.Response === <span class="str">"True"</span>) {
+        <span class="kw">return</span> {
+          id: data.imdbID,
+          title: data.Title,
+          poster_path: data.Poster,
+          description: data.Plot,
+          rating: data.imdbRating,
+          genre: data.Genre,
+          <span class="cm">// ... other fields</span>
+        };
+      }
+      <span class="kw">return null</span>;
+    })
+  );
+  <span class="kw">return</span> results.<span class="fn">filter</span>((m) =&gt; m !== <span class="kw">null</span>);
+};</pre>
+
+    <h3>Platform Catalogs</h3>
+    <p>Each platform has a curated catalog of movie titles organized into categories:</p>
+
+    <pre><span class="kw">const</span> PLATFORM_CATALOGS = {
+  <span class="str">netflix</span>: {
+    trending:    [<span class="str">"Stranger Things"</span>, <span class="str">"Wednesday"</span>, <span class="str">"Squid Game"</span>, ...],
+    popular:     [<span class="str">"The Witcher"</span>, <span class="str">"Red Notice"</span>, <span class="str">"Bird Box"</span>, ...],
+    newReleases: [<span class="str">"Rebel Moon"</span>, <span class="str">"The Killer"</span>, ...],
+  },
+  <span class="str">disney</span>: {
+    trending:    [<span class="str">"The Mandalorian"</span>, <span class="str">"Loki"</span>, <span class="str">"Ahsoka"</span>, ...],
+    popular:     [<span class="str">"Encanto"</span>, <span class="str">"Moana"</span>, <span class="str">"Black Panther"</span>, ...],
+    newReleases: [<span class="str">"Elemental"</span>, <span class="str">"The Marvels"</span>, ...],
+  },
+  <span class="cm">// ... HBO Max, Prime, Hulu, Apple TV+</span>
+};</pre>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 11. REUSABLE COMPONENTS                             -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec11">11. Reusable Components</h2>
+
+    <h3>ConnectionModal</h3>
+    <p>A visually engaging multi-step animation that simulates a "secure connection" when connecting a new streaming
+      platform:</p>
+
+    <pre><span class="kw">const</span> steps = [
+  { label: <span class="str">"Initiating Handshake"</span>,
+    sub: <span class="str">"Establishing secure tunnel..."</span> },
+  { label: <span class="str">"Authenticating"</span>,
+    sub: <span class="str">"Verifying credentials..."</span> },
+  { label: <span class="str">"Syncing Watchlist"</span>,
+    sub: <span class="str">"Aggregating content library..."</span> },
+  { label: <span class="str">"Optimizing Playback"</span>,
+    sub: <span class="str">"Configuring streaming routes..."</span> },
+  { label: <span class="str">"Finalizing"</span>,
+    sub: <span class="str">"Integrating with CineNova Hub"</span> }
+];
+
+<span class="fn">useEffect</span>(() =&gt; {
+  <span class="kw">if</span> (step < steps.length) {
+    <span class="kw">const</span> interval = <span class="fn">setInterval</span>(() =&gt; {
+      <span class="fn">setProgress</span>((prev) =&gt; {
+        <span class="kw">if</span> (prev >= <span class="num">100</span>) {
+          <span class="fn">setStep</span>((s) =&gt; s + <span class="num">1</span>);
+          <span class="kw">return</span> <span class="num">0</span>;
+        }
+        <span class="kw">return</span> prev + (Math.<span class="fn">random</span>() * <span class="num">20</span>);
+      });
+    }, <span class="num">300</span>);
+  } <span class="kw">else</span> {
+    <span class="fn">setTimeout</span>(onSuccess, <span class="num">1500</span>);
+  }
+}, [step]);</pre>
+
+    <h3>MovieCard</h3>
+    <p>A reusable card component with hover-activated poster zoom, play button overlay, and rating badge:</p>
+
+    <pre><span class="kw">function</span> <span class="fn">MovieCard</span>({ movie, onPlay, onSelect, platformColor }) {
+  <span class="kw">return</span> (
+    &lt;div className=<span class="str">"group cursor-pointer"</span>&gt;
+      &lt;div className=<span class="str">"aspect-[2/3] rounded-2xl overflow-hidden"</span>
+           onClick={() =&gt; <span class="fn">onSelect</span>(movie)}&gt;
+        &lt;img src={movie.poster_path}
+             className=<span class="str">"group-hover:scale-110
+                        transition-transform duration-1000"</span> /&gt;
+        <span class="cm">{/* Play overlay — visible on hover */}</span>
+        &lt;div className=<span class="str">"opacity-0 group-hover:opacity-100"</span>&gt;
+          &lt;div onClick={() =&gt; <span class="fn">onPlay</span>(movie)}&gt;▶&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+
+    <h3>MovieRow — Horizontal Scroll</h3>
+    <p>A horizontally scrollable row with left/right scroll buttons and CSS snap scrolling:</p>
+
+    <pre><span class="kw">function</span> <span class="fn">MovieRow</span>({ title, movies, platformColor }) {
+  <span class="kw">const</span> scrollRef = <span class="fn">useRef</span>(<span class="kw">null</span>);
+
+  <span class="kw">const</span> <span class="fn">scroll</span> = (dir) =&gt; {
+    scrollRef.current?.<span class="fn">scrollBy</span>({
+      left: dir === <span class="str">"left"</span> ? <span class="num">-600</span> : <span class="num">600</span>,
+      behavior: <span class="str">"smooth"</span>
+    });
+  };
+
+  <span class="kw">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;{title} &lt;span&gt;{movies.length} titles&lt;/span&gt;&lt;/h2&gt;
+      &lt;div ref={scrollRef}
+           className=<span class="str">"flex gap-4 overflow-x-auto snap-x"</span>&gt;
+        {movies.<span class="fn">map</span>((movie) =&gt; (
+          &lt;<span class="fn">MovieCard</span> key={movie.id} movie={movie} /&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- 12. CONCLUSION                                      -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <h2 class="section-title" id="sec12">12. Conclusion</h2>
+
+    <p><strong>CineNova</strong> demonstrates a comprehensive full-stack web application built with modern web
+      technologies. The project successfully showcases:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>What Was Demonstrated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Frontend</strong></td>
+          <td>React 19 with interactive animations, parallax scrolling, IntersectionObserver, and responsive design
+            using TailwindCSS 4</td>
+        </tr>
+        <tr>
+          <td><strong>Backend</strong></td>
+          <td>Next.js App Router API routes with RESTful patterns and cookie-based session management</td>
+        </tr>
+        <tr>
+          <td><strong>Database</strong></td>
+          <td>MongoDB Atlas with Mongoose ODM — atomic updates using <code>$addToSet</code>, <code>$pull</code>,
+            <code>findByIdAndUpdate</code>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Security</strong></td>
+          <td>bcrypt password hashing with salt, HTTP-only cookies, input validation, and error handling</td>
+        </tr>
+        <tr>
+          <td><strong>API Integration</strong></td>
+          <td>OMDb API for real-time movie data — posters, ratings, genres, and plot descriptions</td>
+        </tr>
+        <tr>
+          <td><strong>UX Design</strong></td>
+          <td>Smooth onboarding flow, genre/platform filtering, universal search, and persistent watchlists</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The application provides a real-world, production-quality example of how modern web technologies can be combined
+      to solve the problem of managing multiple streaming subscriptions in a unified, elegant interface.</p>
+
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- FOOTER                                              -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <div class="doc-footer">
+      <strong>Developed by Samay Ajay Sharma &amp; Keshar Mishra</strong><br />
+      Vellore Institute of Technology — 2026
+    </div>
+
+  </div>
+
+</body>
+
+</html>

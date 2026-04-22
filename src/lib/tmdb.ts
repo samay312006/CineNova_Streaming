@@ -85,7 +85,6 @@ export interface Movie {
   rating: string;
   genre: string;
   runtime: string;
-  match: number;
   videoSearch: string;
   trailerUrl: string;
 }
@@ -107,7 +106,36 @@ const fetchMovies = async (list: string[]): Promise<Movie[]> => {
             rating: data.imdbRating || "N/A",
             genre: data.Genre || "",
             runtime: data.Runtime || "",
-            match: Math.floor(Math.random() * 15) + 85,
+            videoSearch: encodeURIComponent(searchQuery),
+            trailerUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`,
+          };
+        }
+        return null;
+      } catch {
+        return null;
+      }
+    })
+  );
+  return results.filter((m): m is Movie => m !== null);
+};
+
+export const fetchMoviesByIds = async (ids: string[]): Promise<Movie[]> => {
+  const results = await Promise.all(
+    ids.map(async (id) => {
+      try {
+        const res = await fetch(`${BASE_URL}?i=${encodeURIComponent(id)}&apikey=${API_KEY}`);
+        const data = await res.json();
+        if (data.Response === "True") {
+          const searchQuery = `${data.Title} ${data.Year} official trailer`;
+          return {
+            id: data.imdbID,
+            title: data.Title,
+            poster_path: data.Poster !== "N/A" ? data.Poster : "https://via.placeholder.com/500x750?text=No+Poster",
+            description: data.Plot || "No description available.",
+            year: data.Year,
+            rating: data.imdbRating || "N/A",
+            genre: data.Genre || "",
+            runtime: data.Runtime || "",
             videoSearch: encodeURIComponent(searchQuery),
             trailerUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(searchQuery)}`,
           };
@@ -154,7 +182,6 @@ export const searchMovies = async (query: string): Promise<Movie[]> => {
         rating: "",
         genre: "",
         runtime: "",
-        match: Math.floor(Math.random() * 15) + 85,
         videoSearch: encodeURIComponent(`${m.Title} ${m.Year} official trailer`),
         trailerUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(`${m.Title} ${m.Year} official trailer`)}`,
       }));

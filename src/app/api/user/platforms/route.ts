@@ -17,7 +17,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Invalid platforms data' }, { status: 400 });
     }
 
+    console.log(`[API] Updating platforms for user: ${userId}`);
     await connectToDatabase();
+    console.log('[API] Connected to database, updating user...');
+    
     const user = await User.findByIdAndUpdate(
       userId,
       { connectedPlatforms: platforms },

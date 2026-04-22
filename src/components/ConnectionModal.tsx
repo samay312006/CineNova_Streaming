@@ -15,11 +15,11 @@ export default function ConnectionModal({ platform, onSuccess, onCancel }: Conne
   const [progress, setProgress] = useState(0);
 
   const steps = [
-    { label: "Initiating Handshake", sub: "Establishing secure tunnel to " + platform.name },
-    { label: "Authenticating", sub: "Verifying credentials with premium node sync" },
-    { label: "Syncing Watchlist", sub: "Aggregating personalized content library" },
-    { label: "Optimizing Playback", sub: "Configuring high-bitrate streaming routes" },
-    { label: "Finalizing", sub: "Integrating with CineNova Hub" }
+    { label: "Connecting", sub: "Contacting " + platform.name + " servers..." },
+    { label: "Authenticating", sub: "Verifying your account details" },
+    { label: "Syncing Watchlist", sub: "Pulling your saved movies and shows" },
+    { label: "Loading Content", sub: "Preparing the unified library" },
+    { label: "Finalizing", sub: "Completing connection steps" }
   ];
 
   useEffect(() => {
@@ -42,9 +42,9 @@ export default function ConnectionModal({ platform, onSuccess, onCancel }: Conne
 
   return (
     <div className="fixed inset-0 z-[500] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl" />
+      <div className="absolute inset-0 bg-black/95" />
       
-      <div className="relative z-10 w-full max-w-lg bg-[#151419] border border-white/10 rounded-[2.5rem] overflow-hidden shadow-[0_0_100px_rgba(34,197,94,0.1)]">
+      <div className="relative z-10 w-full max-w-lg bg-[#151419] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-[0_0_80px_rgba(34,197,94,0.1)]">
         {/* Progress Bar Background */}
         <div className="absolute top-0 left-0 w-full h-1 bg-white/5">
           <div 
@@ -136,7 +136,7 @@ export default function ConnectionModal({ platform, onSuccess, onCancel }: Conne
           
           <div className="mt-6 flex items-center justify-center gap-2 text-gray-600">
             <LucideShieldCheck size={14} />
-            <span className="text-[10px] font-black uppercase tracking-widest">End-to-End Encrypted Tunnel</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">Secure Connection</span>
           </div>
         </div>
       </div>

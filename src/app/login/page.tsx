@@ -52,7 +52,7 @@ export default function LoginPage() {
 
       {/* 🔐 LOGIN FORM */}
       <div className="flex-1 flex items-center justify-center p-4 relative z-10">
-        <div className="w-full max-w-md bg-white/5 backdrop-blur-3xl border border-white/10 p-10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div className="w-full max-w-md bg-[#18171F] border border-white/5 p-10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
           <h1 className="text-4xl font-black mb-2 tracking-tight uppercase">Welcome Back</h1>
           <p className="text-gray-400 mb-8 font-medium">Log in to continue your cinematic journey.</p>
           
@@ -67,7 +67,7 @@ export default function LoginPage() {
               <input 
                 type="email" 
                 placeholder="you@example.com" 
-                className="w-full bg-gray-900/60 backdrop-blur-md border border-white/10 px-6 py-4 rounded-2xl focus:outline-none focus:border-green-500 transition-all duration-300 placeholder:text-gray-600 text-white shadow-inner"
+                className="w-full bg-[#131217] border border-white/10 px-6 py-4 rounded-2xl focus:outline-none focus:border-green-500 transition-all duration-300 placeholder:text-gray-600 text-white shadow-inner"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -79,7 +79,7 @@ export default function LoginPage() {
               <input 
                 type="password" 
                 placeholder="••••••••" 
-                className="w-full bg-gray-900/60 backdrop-blur-md border border-white/10 px-6 py-4 rounded-2xl focus:outline-none focus:border-green-500 transition-all duration-300 placeholder:text-gray-600 text-white shadow-inner"
+                className="w-full bg-[#131217] border border-white/10 px-6 py-4 rounded-2xl focus:outline-none focus:border-green-500 transition-all duration-300 placeholder:text-gray-600 text-white shadow-inner"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -92,7 +92,7 @@ export default function LoginPage() {
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full bg-white text-black px-6 py-5 rounded-2xl font-black text-lg hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_50px_rgba(147,51,234,0.3)] mt-4 uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-white text-black px-6 py-5 rounded-2xl font-black text-lg hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_50px_rgba(34,197,94,0.3)] mt-4 uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Signing in..." : "Sign In"}
             </button>

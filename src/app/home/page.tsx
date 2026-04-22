@@ -6,6 +6,7 @@ import {
   GENRES,
   getPlatformData,
   searchMovies,
+  fetchMoviesByIds,
   type Platform,
   type Movie,
 } from "../../lib/tmdb";
@@ -19,9 +20,8 @@ import { useRouter } from "next/navigation";
 function AmbientGlow({ color }: { color: string }) {
   return (
     <>
-      <div className="fixed top-[-200px] left-[-200px] w-[700px] h-[700px] rounded-full blur-[200px] pointer-events-none transition-colors duration-1000 opacity-15" style={{ backgroundColor: color }} />
-      <div className="fixed bottom-[-300px] right-[-200px] w-[600px] h-[600px] rounded-full blur-[180px] pointer-events-none transition-colors duration-1000 opacity-10" style={{ backgroundColor: color }} />
-      <div className="fixed inset-0 pointer-events-none z-[1] opacity-[0.012]" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px)" }} />
+      <div className="fixed top-[-200px] left-[-200px] w-[700px] h-[700px] rounded-full blur-[150px] pointer-events-none transition-colors duration-1000 opacity-10" style={{ backgroundColor: color }} />
+      <div className="fixed bottom-[-300px] right-[-200px] w-[600px] h-[600px] rounded-full blur-[150px] pointer-events-none transition-colors duration-1000 opacity-5" style={{ backgroundColor: color }} />
     </>
   );
 }
@@ -47,7 +47,12 @@ function OnboardingScreen({ onComplete }: { onComplete: (ids: string[]) => void 
     if (selected.size === 0) return;
     const ids = Array.from(selected);
     try {
-      await axios.post("/api/user/platforms", { platforms: ids });
+      const res = await fetch("/api/user/platforms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ platforms: ids }),
+      });
+      if (!res.ok) throw new Error("Failed to save platforms");
       onComplete(ids);
     } catch (err) {
       console.error("Failed to save platforms", err);
@@ -73,9 +78,9 @@ function OnboardingScreen({ onComplete }: { onComplete: (ids: string[]) => void 
             const isSelected = selected.has(p.id);
             return (
               <button key={p.id} onClick={() => toggle(p.id)}
-                className={`group relative rounded-2xl p-5 md:p-6 border transition-all duration-500 text-left ${isSelected ? "bg-white/[0.06] border-white/20 scale-[1.02]" : "bg-white/[0.02] border-white/[0.05] hover:bg-white/[0.04] hover:border-white/10"}`}
-                style={{ boxShadow: isSelected ? `0 0 40px ${p.color}20` : "none" }}>
-                <div className={`absolute top-3 right-3 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs transition-all duration-300 ${isSelected ? "border-green-400 bg-green-400/20 text-green-400" : "border-white/20 opacity-40"}`}>
+                className={`group relative rounded-2xl p-5 md:p-6 border transition-all duration-500 text-left ${isSelected ? "bg-[#1E1D25] border-green-500/30 scale-[1.02]" : "bg-[#18171F] border-white/5 hover:bg-[#1C1B22] hover:border-white/10"}`}
+                style={{ boxShadow: isSelected ? `0 0 30px ${p.color}20` : "none" }}>
+                <div className={`absolute top-3 right-3 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs transition-all duration-300 ${isSelected ? "border-green-400 bg-green-400/20 text-green-400" : "border-white/10 opacity-40"}`}>
                   {isSelected && "✓"}
                 </div>
                 <div className="flex items-center gap-3 mb-3">
@@ -103,10 +108,10 @@ function OnboardingScreen({ onComplete }: { onComplete: (ids: string[]) => void 
 /* ═══════════════════════════════════════════════════════════ */
 /* 📋 MOVIE DETAIL PANEL                                       */
 /* ═══════════════════════════════════════════════════════════ */
-function MovieDetailPanel({ movie, onClose, onPlay, platform }: { movie: Movie; onClose: () => void; onPlay: (m: Movie) => void; platform?: Platform }) {
+function MovieDetailPanel({ movie, onClose, onPlay, platform, isWatchlisted, onToggleWatchlist }: { movie: Movie; onClose: () => void; onPlay: (m: Movie) => void; platform?: Platform; isWatchlisted?: boolean; onToggleWatchlist?: (m: Movie) => void }) {
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+      <div className="absolute inset-0 bg-black/90" />
       <div className="relative z-10 max-w-5xl w-full bg-[#151419] border border-white/10 rounded-[2rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] flex flex-col md:flex-row" onClick={(e) => e.stopPropagation()}>
         <div className="relative w-full md:w-[300px] flex-shrink-0">
           <img src={movie.poster_path} alt={movie.title} className="w-full h-full object-cover min-h-[280px]" />
@@ -123,7 +128,6 @@ function MovieDetailPanel({ movie, onClose, onPlay, platform }: { movie: Movie; 
           )}
           <h2 className="text-3xl md:text-4xl font-black tracking-tight uppercase leading-tight mb-3">{movie.title}</h2>
           <div className="flex items-center gap-4 mb-5 text-sm font-bold text-gray-400 flex-wrap">
-            <span className="text-green-400">{movie.match}% Match</span>
             <span>{movie.year}</span>
             {movie.runtime && movie.runtime !== "N/A" && <span>{movie.runtime}</span>}
             {movie.rating && movie.rating !== "N/A" && <span>⭐ {movie.rating}</span>}
@@ -140,7 +144,14 @@ function MovieDetailPanel({ movie, onClose, onPlay, platform }: { movie: Movie; 
             <button onClick={() => onPlay(movie)} className="bg-white text-black px-8 py-3.5 rounded-xl font-black text-sm hover:bg-green-600 hover:text-white transition-all transform active:scale-95 uppercase tracking-wider flex items-center gap-2">
               ▶ Watch Trailer
             </button>
-            <button className="bg-white/5 text-white px-6 py-3.5 rounded-xl font-black text-sm border border-white/10 hover:bg-white/10 transition-all">+ My List</button>
+            {onToggleWatchlist && (
+              <button 
+                onClick={() => onToggleWatchlist(movie)}
+                className={`px-6 py-3.5 rounded-xl font-black text-sm border transition-all ${isWatchlisted ? 'bg-green-600/20 text-green-400 border-green-500/30 hover:bg-green-600/30' : 'bg-[#18171F] text-white border-white/5 hover:bg-[#1C1B22]'}`}
+              >
+                {isWatchlisted ? "✓ In Watchlist" : "+ My List"}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -158,13 +169,13 @@ function MovieCard({ movie, onPlay, onSelect, platformColor, large = false }: { 
         <img src={movie.poster_path} alt={movie.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-          <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl text-white transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-xl backdrop-blur-sm" style={{ backgroundColor: platformColor + "CC" }} onClick={(e) => { e.stopPropagation(); onPlay(movie); }}>▶</div>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl text-white transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-xl" style={{ backgroundColor: platformColor }} onClick={(e) => { e.stopPropagation(); onPlay(movie); }}>▶</div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
           <h3 className="font-black text-xs truncate text-white">{movie.title}</h3>
         </div>
         {movie.rating && movie.rating !== "N/A" && (
-          <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] font-black flex items-center gap-1 border border-white/10">
+          <div className="absolute top-2 right-2 bg-black/80 px-2 py-0.5 rounded-md text-[10px] font-black flex items-center gap-1 border border-white/10">
             <span style={{ color: platformColor }}>★</span> {movie.rating}
           </div>
         )}
@@ -232,13 +243,14 @@ function MovieRow({ title, movies, onPlay, onSelect, platformColor, platform }: 
 /* ═══════════════════════════════════════════════════════════ */
 /* ⚙️ SETTINGS MODAL                                          */
 /* ═══════════════════════════════════════════════════════════ */
-function PlatformSettings({ connectedIds, onSave, onClose, onConnectNew }: { connectedIds: string[]; onSave: (ids: string[]) => void; onClose: () => void; onConnectNew: (p: Platform) => void }) {
+function PlatformSettings({ connectedIds, onSave, onClose, onConnectNew, onSignOut, onDeleteAccount }: { connectedIds: string[]; onSave: (ids: string[]) => void; onClose: () => void; onConnectNew: (p: Platform, currentIds: string[]) => void; onSignOut: () => void; onDeleteAccount: () => void }) {
   const [selected, setSelected] = useState<Set<string>>(new Set(connectedIds));
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const toggle = (id: string) => { setSelected((prev) => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; }); };
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
+      <div className="absolute inset-0 bg-black/90" />
       <div className="relative z-10 max-w-lg w-full bg-[#151419] border border-white/10 rounded-[2rem] p-8 shadow-[0_40px_100px_rgba(0,0,0,0.8)]" onClick={(e) => e.stopPropagation()}>
         <button onClick={onClose} className="absolute top-5 right-5 text-gray-500 hover:text-white text-xl transition-colors">✕</button>
         <h2 className="text-2xl font-black tracking-tight mb-2">Manage Platforms</h2>
@@ -247,7 +259,7 @@ function PlatformSettings({ connectedIds, onSave, onClose, onConnectNew }: { con
           {PLATFORMS.map((p) => {
             const isOn = selected.has(p.id);
             return (
-              <div key={p.id} className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${isOn ? "bg-white/[0.05] border-white/15" : "bg-white/[0.01] border-white/[0.05] opacity-50"}`}>
+              <div key={p.id} className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${isOn ? "bg-[#1E1D25] border-green-500/30" : "bg-[#18171F] border-white/5 opacity-70"}`}>
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center text-white font-black text-sm" style={{ backgroundColor: p.color }}>{p.icon}</div>
                   <div className="text-left"><div className="font-black text-sm">{p.name}</div><div className="text-[10px] text-gray-500 font-bold">{p.tagline}</div></div>
@@ -255,16 +267,33 @@ function PlatformSettings({ connectedIds, onSave, onClose, onConnectNew }: { con
                 {isOn ? (
                    <button onClick={() => toggle(p.id)} className="w-10 h-6 rounded-full bg-green-500 flex items-center justify-end px-1 transition-all"><div className="w-4 h-4 rounded-full bg-white shadow-sm" /></button>
                 ) : (
-                   <button onClick={() => onConnectNew(p)} className="text-[10px] font-black uppercase tracking-widest bg-white/10 px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors">Connect</button>
+                   <button onClick={() => onConnectNew(p, Array.from(selected))} className="text-[10px] font-black uppercase tracking-widest bg-white/10 px-3 py-1.5 rounded-lg hover:bg-green-600 transition-colors">Connect</button>
                 )}
               </div>
             );
           })}
         </div>
-        <button onClick={() => selected.size > 0 && onSave(Array.from(selected))} disabled={selected.size === 0}
-          className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all ${selected.size > 0 ? "bg-green-600 text-white hover:bg-green-500" : "bg-white/5 text-gray-600 cursor-not-allowed"}`}>
+        <button onClick={() => onSave(Array.from(selected))}
+          className="w-full py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all bg-green-600 text-white hover:bg-green-500 shadow-[0_10px_30px_rgba(34,197,94,0.2)]">
           Save Changes ({selected.size} connected)
         </button>
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <button onClick={onSignOut} className="py-3.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border border-white/10 text-gray-400 hover:bg-white/5 hover:text-white">
+            Sign Out
+          </button>
+          {!confirmDelete ? (
+            <button onClick={() => setConfirmDelete(true)} className="py-3.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border border-red-500/20 text-red-500/60 hover:bg-red-500/10 hover:text-red-500">
+              Delete Account
+            </button>
+          ) : (
+            <button onClick={onDeleteAccount} className="py-3.5 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all bg-red-600 text-white shadow-[0_10px_20px_rgba(220,38,38,0.3)] animate-pulse">
+              Confirm Delete
+            </button>
+          )}
+        </div>
+        {confirmDelete && (
+          <p className="mt-4 text-[9px] font-bold text-red-500/50 text-center uppercase tracking-tighter">Warning: This action is permanent and cannot be undone.</p>
+        )}
       </div>
     </div>
   );
@@ -287,8 +316,11 @@ export default function Home() {
   const [selectedMoviePlatform, setSelectedMoviePlatform] = useState<Platform | undefined>();
   const [scrollY, setScrollY] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
+  const [watchlistIds, setWatchlistIds] = useState<Set<string>>(new Set());
+  const [watchlistMovies, setWatchlistMovies] = useState<Movie[]>([]);
 
   const [connectingPlatform, setConnectingPlatform] = useState<Platform | null>(null);
+  const [currentModalPlatforms, setCurrentModalPlatforms] = useState<string[]>([]);
   const router = useRouter();
 
   // Check onboarding and fetch profile
@@ -300,6 +332,9 @@ export default function Home() {
           const platforms = res.data.user.connectedPlatforms || [];
           setConnectedIds(platforms);
           setShowOnboarding(platforms.length === 0);
+          if (res.data.user.watchlist) {
+            setWatchlistIds(new Set(res.data.user.watchlist));
+          }
         }
       } catch (err: any) {
         if (err.response?.status === 401) {
@@ -311,6 +346,19 @@ export default function Home() {
     };
     fetchUser();
   }, [router]);
+
+  // Load Watchlist movies
+  useEffect(() => {
+    const fetchWatchlist = async () => {
+      if (watchlistIds.size > 0) {
+        const movies = await fetchMoviesByIds(Array.from(watchlistIds));
+        setWatchlistMovies(movies);
+      } else {
+        setWatchlistMovies([]);
+      }
+    };
+    fetchWatchlist();
+  }, [watchlistIds]);
 
   // Fetch platform data
   const loadPlatformData = useCallback(async (ids: string[]) => {
@@ -346,24 +394,70 @@ export default function Home() {
   
   const handleUpdatePlatforms = async (ids: string[]) => { 
     try {
-      await axios.post("/api/user/platforms", { platforms: ids });
+      const res = await fetch("/api/user/platforms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ platforms: ids }),
+      });
+      
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      
       setConnectedIds(ids); 
       setShowSettings(false); 
       setActiveFilter("all"); 
     } catch (err) {
-      console.error("Failed to update platforms", err);
+      console.error("Failed to update platforms:", err);
+      alert("Connection failed. Please check your internet or try again later.");
     }
   };
 
-  const handleConnectPlatform = (platform: Platform) => {
+  const handleConnectPlatform = (platform: Platform, currentIds: string[]) => {
     setConnectingPlatform(platform);
+    setCurrentModalPlatforms(currentIds);
   };
 
   const onConnectionSuccess = async () => {
     if (!connectingPlatform) return;
-    const newIds = [...connectedIds, connectingPlatform.id];
+    const newIds = [...new Set([...currentModalPlatforms, connectingPlatform.id])];
     await handleUpdatePlatforms(newIds);
     setConnectingPlatform(null);
+    setCurrentModalPlatforms([]);
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await axios.delete("/api/user/delete");
+      router.push("/login");
+    } catch (err) {
+      console.error("Failed to delete account", err);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await axios.post("/api/auth/signout");
+      router.push("/login");
+    } catch (err) {
+      console.error("Failed to sign out", err);
+    }
+  };
+
+  const handleToggleWatchlist = async (movie: Movie) => {
+    try {
+      if (watchlistIds.has(movie.id)) {
+        await axios.delete("/api/user/watchlist", { data: { movieId: movie.id } });
+        setWatchlistIds((prev) => {
+          const next = new Set(prev);
+          next.delete(movie.id);
+          return next;
+        });
+      } else {
+        await axios.post("/api/user/watchlist", { movieId: movie.id });
+        setWatchlistIds((prev) => new Set(prev).add(movie.id));
+      }
+    } catch (err) {
+      console.error("Failed to toggle watchlist", err);
+    }
   };
 
   // Play logic: links to actual platform when possible
@@ -417,11 +511,20 @@ export default function Home() {
 
       {/* Detail panel */}
       {selectedMovie && (
-        <MovieDetailPanel movie={selectedMovie} onClose={() => setSelectedMovie(null)} onPlay={playTrailer} platform={selectedMoviePlatform} />
+        <MovieDetailPanel movie={selectedMovie} onClose={() => setSelectedMovie(null)} onPlay={playTrailer} platform={selectedMoviePlatform} isWatchlisted={watchlistIds.has(selectedMovie.id)} onToggleWatchlist={handleToggleWatchlist} />
       )}
 
       {/* Settings */}
-      {showSettings && <PlatformSettings connectedIds={connectedIds} onSave={handleUpdatePlatforms} onClose={() => setShowSettings(false)} onConnectNew={handleConnectPlatform} />}
+      {showSettings && (
+        <PlatformSettings 
+          connectedIds={connectedIds} 
+          onSave={handleUpdatePlatforms} 
+          onClose={() => setShowSettings(false)} 
+          onConnectNew={handleConnectPlatform} 
+          onSignOut={handleSignOut} 
+          onDeleteAccount={handleDeleteAccount}
+        />
+      )}
 
       {/* Connection Handshake */}
       {connectingPlatform && (
@@ -433,7 +536,7 @@ export default function Home() {
       )}
 
       {/* Nav */}
-      <nav className="fixed top-0 w-full z-[100] flex items-center justify-between px-6 md:px-14 py-4 transition-all duration-500" style={{ backgroundColor: `rgba(13,12,17,${navOpacity})`, backdropFilter: navOpacity > 0.1 ? "blur(20px)" : "none" }}>
+      <nav className="fixed top-0 w-full z-[100] flex items-center justify-between px-6 md:px-14 py-4 transition-all duration-500" style={{ backgroundColor: `rgba(13,12,17,${navOpacity > 0.5 ? 0.95 : navOpacity})` }}>
         <div className="flex items-center gap-5">
           <div className="text-2xl md:text-3xl font-black text-green-600 tracking-tighter cursor-pointer hover:opacity-80 transition-opacity" onClick={() => { setSearchQuery(""); setIsSearching(false); }}>CineNova</div>
           <div className="hidden md:flex items-center gap-1.5">
@@ -445,9 +548,9 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <div className="relative">
             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs">🔍</div>
-            <input type="text" placeholder="Search..." className="bg-white/[0.04] border border-white/10 pl-9 pr-4 py-2.5 rounded-xl w-44 md:w-72 focus:w-56 md:focus:w-96 focus:outline-none focus:border-green-500/50 transition-all duration-500 placeholder:text-gray-600 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            <input type="text" placeholder="Search..." className="bg-[#18171F] border border-white/5 pl-9 pr-4 py-2.5 rounded-xl w-44 md:w-72 focus:w-56 md:focus:w-96 focus:outline-none focus:border-green-500/50 transition-all duration-500 placeholder:text-gray-600 text-sm" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
           </div>
-          <button onClick={() => setShowSettings(true)} className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-sm hover:bg-white/10 transition-all" title="Manage platforms">⚙</button>
+          <button onClick={() => setShowSettings(true)} className="w-9 h-9 rounded-xl bg-[#18171F] border border-white/5 flex items-center justify-center text-sm hover:bg-[#1E1D25] transition-all" title="Manage platforms">⚙</button>
         </div>
       </nav>
 
@@ -478,7 +581,6 @@ export default function Home() {
                   </div>
                   <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 tracking-tighter uppercase leading-[0.85]">{heroMovie.title}</h1>
                   <div className="flex items-center gap-4 mb-5 text-sm font-bold text-gray-300 flex-wrap">
-                    <span className="text-green-400">{heroMovie.match}% Match</span>
                     <span>{heroMovie.year}</span>
                     {heroMovie.runtime && heroMovie.runtime !== "N/A" && <span>{heroMovie.runtime}</span>}
                     {heroMovie.rating && heroMovie.rating !== "N/A" && <span>⭐ {heroMovie.rating}</span>}
@@ -486,26 +588,26 @@ export default function Home() {
                   <p className="text-gray-400 text-sm md:text-base mb-8 line-clamp-2 max-w-xl">{heroMovie.description}</p>
                   <div className="flex gap-3">
                     <button onClick={() => playTrailer(heroMovie, PLATFORMS.find(p => p.id === Object.keys(platformData)[0]))} className="bg-white text-black px-8 md:px-12 py-3.5 rounded-xl font-black text-sm hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-lg uppercase tracking-wider">▶ Play</button>
-                    <button onClick={() => { setSelectedMovie(heroMovie); setSelectedMoviePlatform(connectedPlatforms[0]); }} className="bg-white/5 backdrop-blur-xl text-white px-8 md:px-12 py-3.5 rounded-xl font-black text-sm border border-white/10 hover:bg-white/10 transition-all uppercase tracking-wider">ⓘ Info</button>
+                    <button onClick={() => { setSelectedMovie(heroMovie); setSelectedMoviePlatform(connectedPlatforms[0]); }} className="bg-[#18171F] text-white px-8 md:px-12 py-3.5 rounded-xl font-black text-sm border border-white/5 hover:bg-[#1E1D25] transition-all uppercase tracking-wider">ⓘ Info</button>
                   </div>
                 </div>
               </header>
             )}
 
             {/* Platform + Genre filter bar */}
-            <div className="sticky top-[56px] z-[90] bg-[#0D0C11]/80 backdrop-blur-xl border-b border-white/5">
+            <div className="sticky top-[56px] z-[90] bg-[#0D0C11]/95 border-b border-white/5">
               {/* Platform filters */}
               <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide px-6 md:px-14 pt-3 pb-2">
                 <button onClick={() => setActiveFilter("all")}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all flex-shrink-0 border ${activeFilter === "all" ? "bg-green-600/20 border-green-500/30 text-green-400" : "bg-white/[0.02] border-white/[0.05] text-gray-500 hover:text-white hover:bg-white/[0.04]"}`}>
-                  <span className="w-5 h-5 rounded-md bg-green-600 flex items-center justify-center text-white text-[8px]">🌐</span>
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all flex-shrink-0 border ${activeFilter === "all" ? "bg-green-600 border-green-500 text-white" : "bg-[#18171F] border-white/5 text-gray-500 hover:text-white hover:bg-[#1C1B22]"}`}>
+                  <span className="w-5 h-5 rounded-md bg-green-500 flex items-center justify-center text-white text-[8px]">🌐</span>
                   All ({connectedIds.length})
                 </button>
                 <div className="w-px h-5 bg-white/10 flex-shrink-0 mx-0.5" />
                 {connectedPlatforms.map((p) => (
                   <button key={p.id} onClick={() => setActiveFilter(activeFilter === p.id ? "all" : p.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all flex-shrink-0 border whitespace-nowrap ${activeFilter === p.id ? "bg-white/10 border-white/20 text-white shadow-md" : "bg-white/[0.02] border-white/[0.05] text-gray-500 hover:text-white hover:bg-white/[0.04]"}`}
-                    style={activeFilter === p.id ? { boxShadow: `0 0 25px ${p.color}25` } : {}}>
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all flex-shrink-0 border whitespace-nowrap ${activeFilter === p.id ? "bg-[#1E1D25] border-white/20 text-white shadow-md relative" : "bg-[#18171F] border-white/5 text-gray-500 hover:text-white hover:bg-[#1E1D25]"}`}
+                    style={activeFilter === p.id ? { boxShadow: `0 0 15px ${p.color}20` } : {}}>
                     <span className="w-5 h-5 rounded-md flex items-center justify-center text-white text-[8px] font-black" style={{ backgroundColor: p.color }}>{p.icon}</span>
                     {p.name}
                   </button>
@@ -530,6 +632,9 @@ export default function Home() {
 
             {/* Movie content */}
             <div className="space-y-8 py-8">
+              {activeFilter === "all" && watchlistMovies.length > 0 && (
+                 <MovieRow title="My Watchlist" movies={watchlistMovies} onPlay={(m) => playTrailer(m)} onSelect={(m) => { setSelectedMovie(m); setSelectedMoviePlatform(undefined); }} platformColor="#10B981" />
+              )}
               {loading ? (
                 <div className="px-6 md:px-14 space-y-10">
                   {[1, 2, 3].map((i) => (

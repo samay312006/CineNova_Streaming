@@ -116,8 +116,8 @@ function ScrollReveal({ children, className = "", delay = 0 }: { children: React
 function FeatureCard({ icon, title, description, delay }: { icon: string; title: string; description: string; delay: number }) {
   return (
     <ScrollReveal delay={delay}>
-      <div className="group relative bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-[2rem] p-8 md:p-10 hover:bg-white/[0.06] hover:border-green-500/30 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(147,51,234,0.15)]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center text-2xl shadow-[0_10px_40px_rgba(147,51,234,0.5)] group-hover:scale-110 transition-transform duration-500">
+      <div className="group relative bg-[#18171F] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:bg-[#1E1D25] hover:border-green-500/30 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(34,197,94,0.1)]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center text-2xl shadow-[0_10px_30px_rgba(34,197,94,0.3)] group-hover:scale-110 transition-transform duration-500">
           {icon}
         </div>
         <h3 className="text-xl md:text-2xl font-black mt-6 mb-4 tracking-tight uppercase group-hover:text-green-400 transition-colors duration-500">{title}</h3>
@@ -133,8 +133,8 @@ function PlatformCard({ name, color, icon, delay }: { name: string; color: strin
   return (
     <ScrollReveal delay={delay}>
       <div
-        className={`group relative bg-white/[0.03] backdrop-blur-xl border rounded-[2rem] p-6 md:p-8 transition-all duration-700 hover:-translate-y-2 cursor-pointer ${
-          connected ? "border-green-500/40 shadow-[0_0_40px_rgba(34,197,94,0.1)]" : "border-white/[0.06] hover:border-green-500/30"
+        className={`group relative bg-[#18171F] border rounded-[2rem] p-6 md:p-8 transition-all duration-700 hover:-translate-y-2 cursor-pointer ${
+          connected ? "border-green-500/40 shadow-[0_0_30px_rgba(34,197,94,0.15)]" : "border-white/5 hover:border-green-500/30 hover:bg-[#1E1D25]"
         }`}
         onClick={() => setConnected(!connected)}
       >
@@ -190,7 +190,7 @@ export default function LandingPage() {
       {/* ═══════════════════════════════════════════════ */}
       <nav
         className="fixed top-0 w-full z-[100] flex items-center justify-between px-8 md:px-16 py-6 transition-all duration-500"
-        style={{ backgroundColor: `rgba(13,12,17,${navOpacity})`, backdropFilter: navOpacity > 0.1 ? "blur(20px)" : "none" }}
+        style={{ backgroundColor: `rgba(13,12,17,${navOpacity > 0.5 ? 0.95 : navOpacity})` }}
       >
         <div className="text-3xl md:text-4xl font-black text-green-600 tracking-tighter cursor-pointer hover:opacity-80 transition-opacity">
           CineNova
@@ -282,13 +282,13 @@ export default function LandingPage() {
             style={{ transform: `translateY(${scrollY * -0.02}px)` }}
           >
             <Link href="/signup">
-              <button className="group relative bg-white text-black px-12 md:px-16 py-5 rounded-2xl font-black text-lg hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-[0_20px_50px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_60px_rgba(147,51,234,0.4)] uppercase tracking-wider overflow-hidden">
+              <button className="group relative bg-white text-black px-12 md:px-16 py-5 rounded-2xl font-black text-lg hover:bg-green-600 hover:text-white transition-all transform active:scale-95 shadow-[0_15px_40px_rgba(255,255,255,0.1)] hover:shadow-[0_20px_50px_rgba(34,197,94,0.3)] uppercase tracking-wider overflow-hidden">
                 <span className="relative z-10">Start Watching Free</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </button>
             </Link>
             <Link href="/login">
-              <button className="bg-white/5 backdrop-blur-xl text-white px-12 md:px-16 py-5 rounded-2xl font-black text-lg border border-white/10 hover:bg-white/10 hover:border-green-500/30 transition-all uppercase tracking-wider">
+              <button className="bg-[#18171F] text-white px-12 md:px-16 py-5 rounded-2xl font-black text-lg border border-white/5 hover:bg-[#1E1D25] hover:border-green-500/30 transition-all uppercase tracking-wider">
                 Sign In
               </button>
             </Link>
@@ -341,10 +341,10 @@ export default function LandingPage() {
       <section className="relative py-24 border-y border-white/5">
         <div className="max-w-7xl mx-auto px-8 md:px-16 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           {[
-            { value: 150, suffix: "M+", label: "Active Users" },
-            { value: 50000, suffix: "+", label: "Movies & Shows" },
-            { value: 12, suffix: "+", label: "Platforms Connected" },
-            { value: 4, suffix: "K", label: "Ultra HD Streaming" },
+            { value: 6, suffix: "+", label: "Major Networks" },
+            { value: 0, suffix: " Ads", label: "Pure Streaming" },
+            { value: 100, suffix: "%", label: "Unified Experience" },
+            { value: 1, suffix: " Hub", label: "All Your Content" },
           ].map((stat, i) => (
             <ScrollReveal key={i} delay={i * 150}>
               <AnimatedCounter target={stat.value} suffix={stat.suffix} />
@@ -440,8 +440,8 @@ export default function LandingPage() {
             <ScrollReveal delay={200}>
               <div className="relative">
                 {/* Main "screen" mockup */}
-                <div className="relative bg-gradient-to-br from-green-900/30 to-emerald-900/20 rounded-[2rem] border border-white/10 overflow-hidden aspect-video shadow-[0_40px_100px_rgba(147,51,234,0.15)]">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-green-600/10 via-transparent to-emerald-600/10" />
+                <div className="relative bg-[#18171F] rounded-[2rem] border border-white/5 overflow-hidden aspect-video shadow-[0_30px_60px_rgba(0,0,0,0.5)]">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-green-600/5 via-transparent to-emerald-600/5" />
                   <div className="p-6 md:p-8 relative z-10">
                     <div className="flex items-center gap-2 mb-6">
                       <div className="w-3 h-3 rounded-full bg-red-500/60" />
@@ -453,7 +453,7 @@ export default function LandingPage() {
                       <div className="h-4 bg-white/5 rounded-full w-1/2" />
                       <div className="mt-6 grid grid-cols-3 gap-3">
                         {[1, 2, 3].map((i) => (
-                          <div key={i} className="aspect-[2/3] bg-green-500/10 rounded-xl border border-white/5 animate-pulse" style={{ animationDelay: `${i * 0.5}s` }} />
+                          <div key={i} className="aspect-[2/3] bg-[#1E1D25] rounded-xl border border-white/5" style={{ animationDelay: `${i * 0.5}s` }} />
                         ))}
                       </div>
                     </div>
@@ -461,12 +461,12 @@ export default function LandingPage() {
                 </div>
 
                 {/* Floating phone mockup */}
-                <div className="absolute -bottom-6 -right-6 md:-bottom-8 md:-right-8 w-28 md:w-36 bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl border border-white/10 p-2 md:p-3 shadow-2xl transform rotate-6 hover:rotate-0 transition-transform duration-700">
-                  <div className="aspect-[9/16] bg-gradient-to-br from-green-900/40 to-emerald-900/30 rounded-2xl overflow-hidden">
+                <div className="absolute -bottom-6 -right-6 md:-bottom-8 md:-right-8 w-28 md:w-36 bg-[#131217] rounded-3xl border border-white/10 p-2 md:p-3 shadow-2xl transform rotate-6 hover:rotate-0 transition-transform duration-700">
+                  <div className="aspect-[9/16] bg-[#18171F] rounded-2xl overflow-hidden border border-white/5">
                     <div className="p-2 space-y-2 mt-4">
                       <div className="h-2 bg-white/10 rounded-full w-3/4" />
                       <div className="h-2 bg-white/5 rounded-full w-1/2" />
-                      <div className="mt-3 aspect-video bg-green-500/15 rounded-lg" />
+                      <div className="mt-3 aspect-video bg-[#1E1D25] rounded-lg" />
                     </div>
                   </div>
                 </div>
@@ -534,9 +534,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-20">
-              <span className="text-green-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">What People Say</span>
+              <span className="text-green-500 font-black tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block">Our Promise</span>
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
-                Loved by <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Millions</span>
+                A Better <span className="bg-gradient-to-r from-green-400 to-emerald-600 bg-clip-text text-transparent">Way to Watch</span>
               </h2>
             </div>
           </ScrollReveal>
@@ -544,41 +544,26 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                quote: "I used to juggle 5 different streaming apps. Now CineNova brings everything together in one stunning interface. Game changer!",
-                name: "Sarah Chen",
-                role: "Film Enthusiast",
-                avatar: "SC",
+                title: "No Extra Fees",
+                description: "CineNova acts as your unified remote control. There are no hidden fees. If you have the subscription, you have the content.",
+                icon: "💳",
               },
               {
-                quote: "The unified search alone is worth it. I found movies I didn't even know were on my subscriptions. The AI recommendations are incredible.",
-                name: "Marcus Johnson",
-                role: "Binge Watcher",
-                avatar: "MJ",
+                title: "Privacy First",
+                description: "We don't track what you watch to sell ads. Your watch history is securely stored to improve your own personalized recommendations.",
+                icon: "🔒",
               },
               {
-                quote: "My family has Netflix, Disney+ and Hulu. CineNova lets my kids browse everything safely in one place. Absolute lifesaver.",
-                name: "Emily Rodriguez",
-                role: "Super Mom",
-                avatar: "ER",
+                title: "Always Ad-Free",
+                description: "Our interface is 100% ad-free. We believe finding what to watch should be an enjoyable experience, not an advertising opportunity.",
+                icon: "🚫",
               },
-            ].map((testimonial, i) => (
+            ].map((feature, i) => (
               <ScrollReveal key={i} delay={i * 200}>
-                <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-[2rem] p-8 md:p-10 hover:border-green-500/20 transition-all duration-500">
-                  <div className="flex items-center gap-1 mb-6">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <span key={star} className="text-green-500 text-lg">★</span>
-                    ))}
-                  </div>
-                  <p className="text-gray-300 text-base leading-relaxed mb-8 italic">&ldquo;{testimonial.quote}&rdquo;</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-700 flex items-center justify-center font-black text-sm">
-                      {testimonial.avatar}
-                    </div>
-                    <div>
-                      <div className="font-black text-white">{testimonial.name}</div>
-                      <div className="text-gray-500 text-sm font-bold">{testimonial.role}</div>
-                    </div>
-                  </div>
+                <div className="bg-[#18171F] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-green-500/30 transition-all duration-500 hover:-translate-y-2 h-full shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_50px_rgba(34,197,94,0.1)]">
+                  <div className="text-4xl mb-6">{feature.icon}</div>
+                  <h3 className="font-black text-white text-xl tracking-tight mb-4 uppercase">{feature.title}</h3>
+                  <p className="text-gray-400 text-base leading-relaxed">{feature.description}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -604,12 +589,12 @@ export default function LandingPage() {
               Join millions of users. Create your account in seconds, connect your platforms, and unify your streaming world.
             </p>
             <Link href="/signup">
-              <button className="group relative bg-green-600 hover:bg-green-500 text-white px-16 py-6 rounded-2xl font-black text-xl uppercase tracking-wider transition-all transform active:scale-95 shadow-[0_20px_60px_rgba(147,51,234,0.4)] hover:shadow-[0_30px_80px_rgba(147,51,234,0.5)]">
-                Create Free Account
+              <button className="group relative bg-green-600 hover:bg-green-500 text-white px-16 py-6 rounded-2xl font-black text-xl uppercase tracking-wider transition-all transform active:scale-95 shadow-[0_15px_40px_rgba(34,197,94,0.3)] hover:shadow-[0_20px_50px_rgba(34,197,94,0.4)]">
+                Create Account
                 <span className="ml-3 inline-block group-hover:translate-x-1 transition-transform">→</span>
               </button>
             </Link>
-            <p className="text-gray-600 text-sm mt-6 font-bold">No credit card required • Cancel anytime</p>
+            <p className="text-gray-600 text-sm mt-6 font-bold">Unify your streaming experience</p>
           </ScrollReveal>
         </div>
       </section>
